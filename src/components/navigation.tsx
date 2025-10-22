@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion, useScroll, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, MoonStar, Sun } from "lucide-react";
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { useTheme } from "@/components/theme-provider";
 
 export function Navigation() {
@@ -15,7 +15,9 @@ export function Navigation() {
   const { scrollYProgress } = useScroll();
   const [highlightStyle, setHighlightStyle] = useState({ left: 0, width: 0 });
   const [isMouseDown, setIsMouseDown] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const navRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
+  const lastScrollY = useRef(0);
 
   const links = [
     { href: "/", label: "Home" },
@@ -23,6 +25,24 @@ export function Navigation() {
     { href: "/projects", label: "Projects" },
     { href: "/resume", label: "Resume" },
   ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show navbar if scrolling up, hide if scrolling down
+      if (currentScrollY < lastScrollY.current || currentScrollY < 50) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setIsVisible(false);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useLayoutEffect(() => {
     const activeLink = navRefs.current[pathname];
@@ -64,19 +84,21 @@ export function Navigation() {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border"
-    >
-      {/* Scroll Progress Bar */}
+    <>
+      {/* Scroll Progress Bar - Always visible */}
       <motion.div
         key={pathname}
-        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary origin-left"
+        className="fixed top-0 left-0 right-0 h-0.5 bg-primary origin-left z-[60]"
         style={{ scaleX: scrollYProgress }}
         initial={{ scaleX: 0 }}
       />
+      
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: isVisible ? 0 : -100 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border pt-0.5"
+      >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="text-xl font-bold outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm">
@@ -196,6 +218,7 @@ export function Navigation() {
         )}
       </div>
     </motion.nav>
+    </>
   );
 }
 
