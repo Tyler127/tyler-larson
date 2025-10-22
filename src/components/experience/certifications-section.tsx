@@ -9,6 +9,10 @@ interface CertificationsSectionProps {
 }
 
 export function CertificationsSection({ certifications }: CertificationsSectionProps) {
+  if (!certifications || certifications.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-16 pb-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -22,6 +22,9 @@ export interface Project {
     downloadUrl: string;
   };
   screenshots: Array<string | { src: string; label?: string }>;
+  academicProject?: boolean;
+  period?: string;
+  course?: string;
 }
 
 interface ProjectCardProps {
@@ -45,9 +48,16 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               <div className="flex items-start justify-between mb-3">
                 <Code2 className="w-8 h-8 text-primary flex-shrink-0" />
                 <div className="flex gap-2">
-                  <Badge variant="outline" className="text-xs">
-                    {project.license}
-                  </Badge>
+                  {project.academicProject && (
+                    <Badge variant="outline" className="text-xs">
+                      Academic Project
+                    </Badge>
+                  )}
+                  {!project.academicProject && project.license && (
+                    <Badge variant="outline" className="text-xs">
+                      {project.license}
+                    </Badge>
+                  )}
                   {project.stars > 0 && (
                     <Badge variant="secondary" className="text-xs">
                       ⭐ {project.stars}
@@ -58,6 +68,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               <h3 className="text-2xl font-semibold mb-3">
                 {project.title}
               </h3>
+              {project.course && (
+                <p className="text-sm text-muted-foreground mb-2">
+                  <span className="font-medium">{project.course}</span> • {project.period}
+                </p>
+              )}
               <p className="text-muted-foreground mb-4">
                 {project.description}
               </p>
@@ -140,19 +155,21 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-auto">
-              <Button asChild className="w-full">
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2"
-                >
-                  <Github className="w-4 h-4" />
-                  View on GitHub
-                </a>
-              </Button>
-            </div>
+            {project.github && (
+              <div className="mt-auto">
+                <Button asChild className="w-full">
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    <Github className="w-4 h-4" />
+                    View on GitHub
+                  </a>
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Right Side - Screenshots */}

@@ -14,66 +14,48 @@ export interface Education {
   location: string;
   period: string;
   honors?: string;
+  focus?: string;
 }
 
 export const experiences: Experience[] = [
   {
-    title: "Senior Full Stack Developer",
-    company: "Tech Innovations Inc.",
-    location: "San Francisco, CA",
-    period: "2022 - Present",
+    title: "Merchandiser",
+    company: "O'Reilly Auto Parts",
+    location: "Andover, MN",
+    period: "May 2022 - September 2023",
     description:
-      "Leading development of enterprise-scale applications using modern web technologies. Architecting scalable solutions and mentoring junior developers.",
+      "Managed inventory operations and merchandise organization to optimize store efficiency and product availability.",
     achievements: [
-      "Increased application performance by 40% through optimization",
-      "Led migration to microservices architecture",
-      "Implemented CI/CD pipeline reducing deployment time by 60%",
+      "Conducted efficient stock check-ins and replenishment to ensure product availability",
+      "Lead solo projects to optimize merchandise organization, enhancing the efficiency of daily tasks",
     ],
-    skills: ["React", "Node.js", "TypeScript", "Python", "REST API", "Docker", "PostgreSQL", "Bash"],
+    skills: ["Inventory Management", "Organization", "Time Management", "Independent Work"],
   },
   {
-    title: "Full Stack Developer",
-    company: "Digital Solutions Co.",
-    location: "Austin, TX",
-    period: "2020 - 2022",
+    title: "Student Staff",
+    company: "University of Minnesota, Twin Cities - Department of Mechanical Engineering",
+    location: "Minneapolis, MN",
+    period: "August 2021 - May 2022",
     description:
-      "Developed and maintained multiple client-facing web applications. Collaborated with design team to implement pixel-perfect UI components.",
+      "Provided administrative and operational support for the Department of Mechanical Engineering.",
     achievements: [
-      "Built responsive web applications serving 100K+ users",
-      "Reduced bug count by 35% through comprehensive testing",
-      "Integrated third-party APIs for enhanced functionality",
+      "Provided support for a student population of over 800, creating a welcoming and inclusive environment",
+      "Completed routine tasks for department faculty, enabling them to focus on higher-priority projects",
     ],
-    skills: ["React", "PHP", "Laravel", "JavaScript", "HTML", "CSS", "Tailwind CSS", "REST API"],
-  },
-  {
-    title: "Frontend Developer",
-    company: "StartUp Ventures",
-    location: "Remote",
-    period: "2018 - 2020",
-    description:
-      "Created engaging user interfaces and interactive experiences. Worked closely with UX designers to bring mockups to life.",
-    achievements: [
-      "Developed reusable component library used across 5+ projects",
-      "Improved page load time by 50% through code splitting",
-      "Implemented accessibility standards achieving WCAG 2.1 AA compliance",
-    ],
-    skills: ["JavaScript", "React", "HTML", "CSS", "Tailwind CSS", "Webpack", "Git"],
+    skills: ["Customer Service", "Administrative Support", "Communication", "Organization"],
   },
 ];
 
 export const education: Education[] = [
   {
     degree: "Bachelor of Science in Computer Science",
-    institution: "University of Technology",
-    location: "Boston, MA",
-    period: "2014 - 2018",
-    honors: "Magna Cum Laude",
+    focus: "Software Engineering",
+    institution: "University of Minnesota, Twin Cities",
+    location: "Minneapolis, MN",
+    period: "September 2021 - May 2024",
+    honors: "Cumulative GPA: 3.3",
   },
 ];
 
-export const certifications: string[] = [
-  "AWS Certified Solutions Architect",
-  "Google Cloud Professional Developer",
-  "MongoDB Certified Developer",
-];
+export const certifications: string[] = [];
 

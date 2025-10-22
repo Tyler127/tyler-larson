@@ -1,18 +1,16 @@
 export const contactInfo = [
-  { icon: "Mail", label: "tyler.larson@email.com", href: "mailto:tyler.larson@email.com" },
-  { icon: "Phone", label: "(555) 123-4567", href: "tel:+15551234567" },
-  { icon: "MapPin", label: "San Francisco, CA" },
-  { icon: "Linkedin", label: "linkedin.com/in/tylerlarson", href: "https://linkedin.com/in/tylerlarson" },
-  { icon: "Github", label: "github.com/tylerlarson", href: "https://github.com/tylerlarson" },
-  { icon: "Globe", label: "tylerlarson.dev", href: "https://tylerlarson.dev" },
+  { icon: "Mail", label: "tylerjlarson2@gmail.com", href: "mailto:tylerjlarson2@gmail.com" },
+  { icon: "Phone", label: "612-803-3131", href: "tel:+16128033131" },
+  { icon: "MapPin", label: "Minneapolis, MN" },
+  { icon: "Linkedin", label: "linkedin.com/in/tyler-j-larson", href: "https://linkedin.com/in/tyler-j-larson" },
+  { icon: "Github", label: "github.com/Tyler127", href: "https://github.com/Tyler127" },
 ];
 
 export const skills = {
-  "Languages": ["JavaScript", "TypeScript", "Python", "PHP", "SQL", "HTML", "CSS", "Bash"],
-  "Frontend": ["React", "Next.js", "Vue.js", "Tailwind CSS", "Sass"],
-  "Backend": ["Node.js", "Express", "Laravel", "REST API", "Django", "GraphQL"],
-  "Database": ["PostgreSQL", "MongoDB", "Redis", "MySQL"],
-  "DevOps": ["AWS", "Docker", "Kubernetes", "CI/CD", "GitHub Actions"],
-  "Tools": ["Git", "Webpack", "Jest", "Cypress", "Figma"],
+  "Languages": ["Java", "Python", "C", "C++", "C#", "HTML", "CSS", "JavaScript", "TypeScript", "SQL", "OCaml"],
+  "Frontend": ["React", "Angular", "jQuery", "Bootstrap", "Tailwind CSS"],
+  "Backend": ["Node.js", "Express.js", "Next.js", "Laravel", "REST API"],
+  "Database": ["MySQL", "PostgreSQL"],
+  "Tools & Technologies": ["Git", "Linux", "AWS", "Azure", "Docker", "Microsoft Office", "Slack", "Jira", "IntelliJ"],
 };
 

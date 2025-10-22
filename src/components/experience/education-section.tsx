@@ -39,9 +39,14 @@ export function EducationSection({ education }: EducationSectionProps) {
                   <h3 className="text-2xl font-semibold mb-2">
                     {edu.degree}
                   </h3>
-                  <p className="text-lg text-primary font-medium">
+                  <p className="text-lg text-primary font-medium mb-2">
                     {edu.institution}
                   </p>
+                  {edu.focus && (
+                    <Badge variant="secondary" className="mb-2">
+                      {edu.focus} Focus
+                    </Badge>
+                  )}
                   {edu.honors && (
                     <Badge variant="outline" className="mt-2">
                       {edu.honors}
