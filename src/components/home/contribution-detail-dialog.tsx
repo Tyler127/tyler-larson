@@ -39,11 +39,18 @@ export function ContributionDetailDialog({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isOpen && count > 0 && date) {
-      loadContributionDetails();
+    if (isOpen && date) {
+      if (count > 0) {
+        loadContributionDetails();
+      } else {
+        // Reset details for days with no contributions
+        setDetails([]);
+        setLoading(false);
+        setError(null);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, date]);
+  }, [isOpen, date, count]);
 
   const loadContributionDetails = async () => {
     setLoading(true);
@@ -172,54 +179,81 @@ export function ContributionDetailDialog({
           </div>
         ) : details.length > 0 ? (
           <div className="space-y-4 mt-4">
-            {details.map((detail, idx) => (
-              <div
-                key={idx}
-                className="border border-border/50 rounded-lg p-4 transition-colors"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 text-muted-foreground">
-                    {getEventIcon(detail.type)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <Badge
-                        variant="outline"
-                        className={getEventColor(detail.type)}
-                      >
-                        {getEventTypeLabel(detail.type)}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {formatTime(detail.occurredAt)}
-                      </span>
-                      {detail.commitCount && (
-                        <span className="text-xs text-muted-foreground">
-                          • {detail.commitCount}{" "}
-                          {detail.commitCount === 1 ? "commit" : "commits"}
-                        </span>
+            {details.map((detail, idx) => {
+              const CardContent = (
+                <>
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 text-muted-foreground">
+                      {getEventIcon(detail.type)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <Badge
+                          variant="outline"
+                          className={getEventColor(detail.type)}
+                        >
+                          {getEventTypeLabel(detail.type)}
+                        </Badge>
+                        {detail.type !== "commit" && (
+                          <span className="text-xs text-muted-foreground">
+                            {formatTime(detail.occurredAt)}
+                          </span>
+                        )}
+                        {detail.commitCount && (
+                          <span className="text-xs text-muted-foreground">
+                            {detail.type === "commit" ? "" : "• "}
+                            {detail.commitCount}{" "}
+                            {detail.commitCount === 1 ? "commit" : "commits"}
+                          </span>
+                        )}
+                      </div>
+                      <div className="font-medium text-sm mb-1">
+                        {detail.repo}
+                      </div>
+                      {detail.title && (
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {detail.title}
+                        </p>
                       )}
                     </div>
-                    <div className="font-medium text-sm mb-1">
-                      {detail.repo}
-                    </div>
-                    {detail.title && (
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {detail.title}
-                      </p>
+                    {detail.type !== "commit" && detail.type !== "pullRequest" && (
+                      <a
+                        href={detail.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors"
+                        aria-label="View on GitHub"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
                     )}
                   </div>
+                </>
+              );
+
+              if (detail.type === "pullRequest") {
+                return (
                   <a
+                    key={idx}
                     href={detail.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors"
-                    aria-label="View on GitHub"
+                    className="block border border-border/50 rounded-lg p-4 transition-colors hover:bg-accent/50 cursor-pointer"
                   >
-                    <ExternalLink className="w-4 h-4" />
+                    {CardContent}
                   </a>
+                );
+              }
+
+              return (
+                <div
+                  key={idx}
+                  className="border border-border/50 rounded-lg p-4 transition-colors"
+                >
+                  {CardContent}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="py-12 text-center">
