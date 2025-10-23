@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import {
   TooltipContent,
@@ -31,29 +31,30 @@ export const ContributionGraph = React.memo(function ContributionGraph({
   onDayHover,
 }: ContributionGraphProps) {
 
-  // Show skeleton if no contributions loaded yet
-  if (!contributions || contributions.length === 0) {
-    return (
-      <div className="w-full space-y-3">
-        <Skeleton className="h-4 w-full" />
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-1">
-            <Skeleton className="h-3 w-8" />
-            <Skeleton className="h-3 w-8" />
-            <Skeleton className="h-3 w-8" />
-            <Skeleton className="h-3 w-8" />
-          </div>
-          <div className="flex-1">
-            <Skeleton className="h-32 w-full" />
-          </div>
-        </div>
-        <Skeleton className="h-4 w-48" />
-      </div>
-    );
-  }
+  // Always use actual contributions if available, otherwise show empty grid
+  // Generate empty structure with correct number of weeks
+  const emptyContributions: ContributionWeek[] = Array.from({ length: 53 }, (_, weekIdx) => ({
+    days: Array.from({ length: 7 }, (_, dayIdx) => ({
+      date: `empty-${weekIdx}-${dayIdx}`,
+      count: 0,
+      level: 0 as 0 | 1 | 2 | 3 | 4
+    }))
+  }));
+
+  // Use state to manage displayed contributions so transitions work
+  const [displayContributions, setDisplayContributions] = useState<ContributionWeek[]>(emptyContributions);
+
+  useEffect(() => {
+    if (contributions && contributions.length > 0) {
+      // Delay slightly to ensure transition is visible
+      requestAnimationFrame(() => {
+        setDisplayContributions(contributions);
+      });
+    }
+  }, [contributions]);
   const getLevelColor = (level: 0 | 1 | 2 | 3 | 4) => {
     const colors = {
-      0: "bg-muted", // Light gray for no contributions
+      0: "bg-muted/30", // Light gray for no contributions
       1: "bg-green-200 dark:bg-green-900/40",
       2: "bg-green-400 dark:bg-green-700/60",
       3: "bg-green-600 dark:bg-green-500/80",
@@ -89,7 +90,7 @@ export const ContributionGraph = React.memo(function ContributionGraph({
     const labels: { month: string; offset: number }[] = [];
     let currentMonth = "";
 
-    contributions.forEach((week, weekIdx) => {
+    displayContributions.forEach((week, weekIdx) => {
       if (week.days.length > 0) {
         const date = new Date(week.days[0].date + "T00:00:00Z");
         const monthName = date.toLocaleDateString("en-US", {
@@ -111,7 +112,7 @@ export const ContributionGraph = React.memo(function ContributionGraph({
   const monthLabels = getMonthLabels();
 
   // Calculate cell size based on container
-  const totalWeeks = contributions.length;
+  const totalWeeks = displayContributions.length;
 
   return (
     <div className="w-full">
@@ -159,7 +160,7 @@ export const ContributionGraph = React.memo(function ContributionGraph({
                   minWidth: "fit-content",
                 }}
               >
-                {contributions.map((week, weekIdx) => (
+                {displayContributions.map((week, weekIdx) => (
                   <div key={weekIdx} className="grid grid-rows-7 gap-[2px]">
                     {week.days.map((day, dayIdx) => (
                       <TooltipPrimitive.Root
@@ -168,9 +169,11 @@ export const ContributionGraph = React.memo(function ContributionGraph({
                       >
                           <TooltipTrigger asChild>
                             <div
-                              className={`aspect-square rounded-sm ${getLevelColor(
-                                day.level,
-                              )} hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer min-w-[10px] min-h-[10px]`}
+                              className={`aspect-square rounded-sm hover:ring-2 hover:ring-primary/50 cursor-pointer min-w-[10px] min-h-[10px] ${getLevelColor(day.level)}`}
+                              style={{
+                                transition: 'background-color 2s ease-out',
+                                transitionDelay: `${(weekIdx * 7 + dayIdx) * 3}ms`
+                              }}
                               onMouseEnter={() => {
                                 onDayHover?.(day.date, day.count);
                               }}
