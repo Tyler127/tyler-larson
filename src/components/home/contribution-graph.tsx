@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import {
   TooltipContent,
@@ -8,7 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ContributionDetailDialog } from "./contribution-detail-dialog";
 
 export interface ContributionDay {
   date: string;
@@ -22,18 +21,15 @@ export interface ContributionWeek {
 
 interface ContributionGraphProps {
   contributions: ContributionWeek[];
-  username?: string;
+  onDayClick?: (date: string, count: number) => void;
+  onDayHover?: (date: string, count: number) => void;
 }
 
-export function ContributionGraph({
+export const ContributionGraph = React.memo(function ContributionGraph({
   contributions,
-  username = "Tyler127",
+  onDayClick,
+  onDayHover,
 }: ContributionGraphProps) {
-  const [selectedDay, setSelectedDay] = useState<{
-    date: string;
-    count: number;
-  } | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Show skeleton if no contributions loaded yet
   if (!contributions || contributions.length === 0) {
@@ -119,7 +115,7 @@ export function ContributionGraph({
 
   return (
     <div className="w-full">
-      <TooltipProvider>
+      <TooltipProvider delayDuration={0}>
         <div className="w-full">
           {/* Month labels */}
           <div className="relative mb-3 h-4 overflow-hidden">
@@ -166,34 +162,34 @@ export function ContributionGraph({
                 {contributions.map((week, weekIdx) => (
                   <div key={weekIdx} className="grid grid-rows-7 gap-[2px]">
                     {week.days.map((day, dayIdx) => (
-                      <TooltipPrimitive.Root key={`${weekIdx}-${dayIdx}`}>
-                        <TooltipTrigger asChild>
-                          <div
-                            className={`aspect-square rounded-sm ${getLevelColor(
-                              day.level,
-                            )} hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer min-w-[10px] min-h-[10px]`}
-                            onClick={() => {
-                              setSelectedDay({
-                                date: day.date,
-                                count: day.count,
-                              });
-                              setIsDialogOpen(true);
-                            }}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-xs font-medium">
-                            {day.count}{" "}
-                            {day.count === 1 ? "contribution" : "contributions"}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatDate(day.date)} • {getDayName(day.date)}
-                          </p>
-                          <p className="text-xs text-primary mt-1">
-                            Click to view details
-                          </p>
-                        </TooltipContent>
-                      </TooltipPrimitive.Root>
+                      <TooltipPrimitive.Root
+                        key={`${weekIdx}-${dayIdx}`}
+                        delayDuration={0}
+                      >
+                          <TooltipTrigger asChild>
+                            <div
+                              className={`aspect-square rounded-sm ${getLevelColor(
+                                day.level,
+                              )} hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer min-w-[10px] min-h-[10px]`}
+                              onMouseEnter={() => {
+                                onDayHover?.(day.date, day.count);
+                              }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                onDayClick?.(day.date, day.count);
+                              }}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs font-medium">
+                              {day.count}{" "}
+                              {day.count === 1 ? "contribution" : "contributions"}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDate(day.date)} • {getDayName(day.date)}
+                            </p>
+                          </TooltipContent>
+                        </TooltipPrimitive.Root>
                     ))}
                   </div>
                 ))}
@@ -254,21 +250,9 @@ export function ContributionGraph({
           </div>
         </div>
       </TooltipProvider>
-
-      {/* Contribution Detail Dialog */}
-      <ContributionDetailDialog
-        username={username}
-        date={selectedDay?.date || ""}
-        count={selectedDay?.count || 0}
-        isOpen={isDialogOpen}
-        onClose={() => {
-          setIsDialogOpen(false);
-          setSelectedDay(null);
-        }}
-      />
     </div>
   );
-}
+});
 
 // Export the stats calculation function
 export function calculateContributionStats(contributions: ContributionWeek[]) {

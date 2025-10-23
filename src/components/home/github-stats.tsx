@@ -6,14 +6,11 @@ import { motion } from "framer-motion";
 import { Github, GitFork, Star, Code2 } from "lucide-react";
 import { ContributionGraph } from "./contribution-graph";
 import { ContributionStats } from "./contribution-stats";
+import { ContributionDialogManager, prefetchContributionData, openContributionDialog } from "./contribution-dialog-manager";
 import { useGitHubStats, useGitHubContributions } from "./queries";
 
 export function GitHubStats() {
-  const {
-    stats,
-    languages,
-    loading: statsLoading,
-  } = useGitHubStats("Tyler127");
+  const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
   const { contributions } = useGitHubContributions("Tyler127");
 
   const loading = statsLoading;
@@ -185,7 +182,15 @@ export function GitHubStats() {
             <h4 className="text-sm font-semibold text-muted-foreground mb-4">
               Contribution Graph
             </h4>
-            <ContributionGraph contributions={contributions} />
+            <ContributionGraph 
+              contributions={contributions}
+              onDayClick={(date, count) => {
+                openContributionDialog(date, count);
+              }}
+              onDayHover={(date, count) => {
+                prefetchContributionData("Tyler127", date, count);
+              }}
+            />
           </div>
 
           {/* Contribution Stats */}
@@ -197,6 +202,9 @@ export function GitHubStats() {
           </div>
         </div>
       </div>
+      
+      {/* Dialog Manager - Completely isolated, no re-renders of graph */}
+      <ContributionDialogManager username="Tyler127" />
     </motion.div>
   );
 }

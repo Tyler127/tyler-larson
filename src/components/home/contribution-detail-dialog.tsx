@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Dialog,
-  DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -16,6 +16,7 @@ import {
   FileText,
   Eye,
   ExternalLink,
+  X,
 } from "lucide-react";
 import { fetchContributionDetails, ContributionDetail } from "./queries";
 
@@ -27,6 +28,76 @@ interface ContributionDetailDialogProps {
   onClose: () => void;
 }
 
+// Cache for contribution details - exported so it can be prefetched
+export const detailsCache = new Map<string, ContributionDetail[]>();
+
+// Helper functions moved outside component for performance
+const formatDate = (dateString: string) => {
+  const [year, month, day] = dateString.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+};
+
+const formatTime = (isoString: string) => {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
+const getEventIcon = (type: ContributionDetail["type"]) => {
+  switch (type) {
+    case "commit":
+      return <GitCommit className="w-4 h-4" />;
+    case "pullRequest":
+      return <GitPullRequest className="w-4 h-4" />;
+    case "issue":
+      return <FileText className="w-4 h-4" />;
+    case "review":
+      return <Eye className="w-4 h-4" />;
+    default:
+      return <GitCommit className="w-4 h-4" />;
+  }
+};
+
+const getEventTypeLabel = (type: ContributionDetail["type"]) => {
+  switch (type) {
+    case "commit":
+      return "Commit";
+    case "pullRequest":
+      return "Pull Request";
+    case "issue":
+      return "Issue";
+    case "review":
+      return "PR Review";
+    default:
+      return type;
+  }
+};
+
+const getEventColor = (type: ContributionDetail["type"]) => {
+  switch (type) {
+    case "commit":
+      return "bg-green-500/10 text-green-500 border-green-500/20";
+    case "pullRequest":
+      return "bg-purple-500/10 text-purple-500 border-purple-500/20";
+    case "issue":
+      return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+    case "review":
+      return "bg-blue-500/10 text-blue-500 border-blue-500/20";
+    default:
+      return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+  }
+};
+
 export function ContributionDetailDialog({
   username,
   date,
@@ -37,26 +108,32 @@ export function ContributionDetailDialog({
   const [details, setDetails] = useState<ContributionDetail[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const loadingRef = useRef(false);
 
-  useEffect(() => {
-    if (isOpen && date) {
-      if (count > 0) {
-        loadContributionDetails();
-      } else {
-        // Reset details for days with no contributions
-        setDetails([]);
-        setLoading(false);
-        setError(null);
-      }
+  const loadContributionDetails = useCallback(async () => {
+    // Prevent duplicate calls
+    if (loadingRef.current) return;
+    
+    const cacheKey = `${username}-${date}`;
+    
+    // Check cache first - if cached, set immediately without loading state
+    const cached = detailsCache.get(cacheKey);
+    if (cached) {
+      setDetails(cached);
+      setLoading(false);
+      setError(null);
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, date, count]);
 
-  const loadContributionDetails = async () => {
+    // Not cached - set loading immediately for instant feedback
+    loadingRef.current = true;
     setLoading(true);
     setError(null);
+    setDetails([]); // Clear old details
+    
     try {
       const data = await fetchContributionDetails(username, date);
+      detailsCache.set(cacheKey, data);
       setDetails(data);
     } catch (err) {
       console.error("Error fetching contribution details:", err);
@@ -67,78 +144,43 @@ export function ContributionDetailDialog({
       setError(errorMessage);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
-  };
+  }, [username, date]);
 
-  const formatDate = (dateString: string) => {
-    const [year, month, day] = dateString.split("-").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-  };
-
-  const formatTime = (isoString: string) => {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
-  const getEventIcon = (type: ContributionDetail["type"]) => {
-    switch (type) {
-      case "commit":
-        return <GitCommit className="w-4 h-4" />;
-      case "pullRequest":
-        return <GitPullRequest className="w-4 h-4" />;
-      case "issue":
-        return <FileText className="w-4 h-4" />;
-      case "review":
-        return <Eye className="w-4 h-4" />;
-      default:
-        return <GitCommit className="w-4 h-4" />;
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    if (date && count > 0) {
+      const cacheKey = `${username}-${date}`;
+      const cached = detailsCache.get(cacheKey);
+      
+      if (cached) {
+        // Cached - show immediately
+        setDetails(cached);
+        setLoading(false);
+        setError(null);
+      } else {
+        // Not cached - show loading state immediately
+        setLoading(true);
+        setDetails([]);
+        setError(null);
+        // Start fetch asynchronously
+        loadContributionDetails();
+      }
+    } else {
+      // No contributions
+      setDetails([]);
+      setLoading(false);
+      setError(null);
     }
-  };
-
-  const getEventTypeLabel = (type: ContributionDetail["type"]) => {
-    switch (type) {
-      case "commit":
-        return "Commit";
-      case "pullRequest":
-        return "Pull Request";
-      case "issue":
-        return "Issue";
-      case "review":
-        return "PR Review";
-      default:
-        return type;
-    }
-  };
-
-  const getEventColor = (type: ContributionDetail["type"]) => {
-    switch (type) {
-      case "commit":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "pullRequest":
-        return "bg-purple-500/10 text-purple-500 border-purple-500/20";
-      case "issue":
-        return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-      case "review":
-        return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      default:
-        return "bg-gray-500/10 text-gray-500 border-gray-500/20";
-    }
-  };
+  }, [isOpen, date, count, loadContributionDetails, username]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl max-w-[calc(100%-6rem)] max-h-[85vh] overflow-y-auto">
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50" />
+        <DialogPrimitive.Content className="bg-background fixed top-[50%] left-[50%] z-50 grid w-full sm:max-w-4xl max-w-[calc(100%-6rem)] max-h-[85vh] overflow-y-auto translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl">
             Contributions on {formatDate(date)}
@@ -264,7 +306,13 @@ export function ContributionDetailDialog({
             </p>
           </div>
         )}
-      </DialogContent>
+        
+        <DialogPrimitive.Close className="absolute top-4 right-4 rounded-full border border-black/20 dark:border-white p-1.5 opacity-70 hover:opacity-100 hover:bg-accent transition-all cursor-pointer">
+          <X className="h-5 w-5" />
+          <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+      </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
     </Dialog>
   );
 }
