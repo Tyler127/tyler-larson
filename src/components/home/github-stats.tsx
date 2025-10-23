@@ -1,20 +1,60 @@
 "use client";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
 import { Github, GitFork, Star, Code2 } from "lucide-react";
-import { ContributionStats } from "./contribution-stats";
-import { ContributionDialogManager, prefetchContributionData, openContributionDialog } from "./contribution-dialog-manager";
 import { useGitHubStats, useGitHubContributions } from "./queries";
+import { prefetchContributionData, openContributionDialog } from "./contribution-dialog-manager";
 
-// Lazy load the heavy contribution graph
+// Lazy load the heavy components
 const ContributionGraph = lazy(() => 
   import("./contribution-graph").then(module => ({ default: module.ContributionGraph }))
 );
 
+const ContributionStats = lazy(() =>
+  import("./contribution-stats").then(module => ({ default: module.ContributionStats }))
+);
+
+const ContributionDialogManager = lazy(() =>
+  import("./contribution-dialog-manager").then(module => ({ default: module.ContributionDialogManager }))
+);
+
 export function GitHubStats() {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    // Defer rendering to next tick to allow page navigation to complete first
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!shouldRender) {
+    return (
+      <div className="p-8 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-6 h-6 rounded-full bg-muted animate-pulse" />
+          <div className="h-8 w-48 bg-muted animate-pulse rounded" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+              <div className="w-5 h-5 mx-auto mb-2 bg-muted animate-pulse rounded" />
+              <div className="h-6 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
+              <div className="h-4 w-16 mx-auto bg-muted animate-pulse rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return <GitHubStatsContent />;
+}
+
+function GitHubStatsContent() {
   const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
   const { contributions } = useGitHubContributions("Tyler127");
 
@@ -64,12 +104,7 @@ export function GitHubStats() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      viewport={{ once: true }}
-    >
+    <div>
       <div className="p-8 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
         <div className="flex items-center gap-3 mb-8">
           <Github className="w-6 h-6 text-primary" />
@@ -164,12 +199,10 @@ export function GitHubStats() {
                     </span>
                   </div>
                   <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${percentage}%` }}
-                      transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                    <div
                       className="h-full rounded-full"
                       style={{
+                        width: `${percentage}%`,
                         backgroundColor: languageColors[language] || "#666",
                       }}
                     />
@@ -236,13 +269,25 @@ export function GitHubStats() {
             <h4 className="text-sm font-semibold text-muted-foreground mb-4">
               Contribution Stats
             </h4>
-            <ContributionStats contributions={contributions} />
+            <Suspense fallback={
+              <div className="space-y-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="p-4 rounded-lg bg-background/50 border border-border/30">
+                    <div className="h-12 bg-muted animate-pulse rounded" />
+                  </div>
+                ))}
+              </div>
+            }>
+              <ContributionStats contributions={contributions} />
+            </Suspense>
           </div>
         </div>
       </div>
       
       {/* Dialog Manager - Completely isolated, no re-renders of graph */}
-      <ContributionDialogManager username="Tyler127" />
-    </motion.div>
+      <Suspense fallback={null}>
+        <ContributionDialogManager username="Tyler127" />
+      </Suspense>
+    </div>
   );
 }
