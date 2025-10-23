@@ -1,13 +1,18 @@
 "use client";
 
+import { lazy, Suspense } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Github, GitFork, Star, Code2 } from "lucide-react";
-import { ContributionGraph } from "./contribution-graph";
 import { ContributionStats } from "./contribution-stats";
 import { ContributionDialogManager, prefetchContributionData, openContributionDialog } from "./contribution-dialog-manager";
 import { useGitHubStats, useGitHubContributions } from "./queries";
+
+// Lazy load the heavy contribution graph
+const ContributionGraph = lazy(() => 
+  import("./contribution-graph").then(module => ({ default: module.ContributionGraph }))
+);
 
 export function GitHubStats() {
   const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
@@ -62,7 +67,7 @@ export function GitHubStats() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.3 }}
       viewport={{ once: true }}
     >
       <div className="p-8 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
@@ -162,7 +167,7 @@ export function GitHubStats() {
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${percentage}%` }}
-                      transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                      transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
                       className="h-full rounded-full"
                       style={{
                         backgroundColor: languageColors[language] || "#666",
@@ -182,15 +187,48 @@ export function GitHubStats() {
             <h4 className="text-sm font-semibold text-muted-foreground mb-4">
               Contribution Graph
             </h4>
-            <ContributionGraph 
-              contributions={contributions}
-              onDayClick={(date, count) => {
-                openContributionDialog(date, count);
-              }}
-              onDayHover={(date, count) => {
-                prefetchContributionData("Tyler127", date, count);
-              }}
-            />
+            <Suspense fallback={
+              <div className="w-full">
+                {/* Skeleton for contribution graph */}
+                <div className="flex gap-4 mb-2">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={i} className="text-xs text-muted-foreground h-4 w-8 animate-pulse bg-muted rounded" />
+                  ))}
+                </div>
+                <div className="flex gap-[2px]">
+                  {[...Array(53)].map((_, weekIdx) => (
+                    <div key={weekIdx} className="grid grid-rows-7 gap-[2px]">
+                      {[...Array(7)].map((_, dayIdx) => (
+                        <div
+                          key={`${weekIdx}-${dayIdx}`}
+                          className="aspect-square rounded-sm bg-muted/30 animate-pulse min-w-[10px] min-h-[10px]"
+                          style={{ animationDelay: `${(weekIdx * 7 + dayIdx) * 2}ms` }}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
+                  <span>Less</span>
+                  <div className="flex gap-[2px]">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-3 h-3 rounded-sm bg-muted/30 animate-pulse" />
+                    ))}
+                  </div>
+                  <span>More</span>
+                </div>
+              </div>
+            }>
+              <ContributionGraph 
+                contributions={contributions}
+                onDayClick={(date, count) => {
+                  openContributionDialog(date, count);
+                }}
+                onDayHover={(date, count) => {
+                  prefetchContributionData("Tyler127", date, count);
+                }}
+              />
+            </Suspense>
           </div>
 
           {/* Contribution Stats */}

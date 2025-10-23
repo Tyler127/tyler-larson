@@ -12,8 +12,20 @@ interface LanguageStats {
   [key: string]: number;
 }
 
+// Cache storage - permanent for the session since GitHub historical data doesn't change
+const statsCache = new Map<string, { stats: GitHubStats; languages: LanguageStats }>();
+const contributionsCache = new Map<string, ContributionWeek[]>();
+
 // Fetch functions
 async function fetchGitHubStats(username: string) {
+  // Check cache first
+  const cacheKey = username;
+  const cached = statsCache.get(cacheKey);
+  
+  if (cached) {
+    console.log("Using cached GitHub stats for", username);
+    return cached;
+  }
   // Fetch user data
   const userResponse = await fetch(`https://api.github.com/users/${username}`);
   const userData = await userResponse.json();
@@ -52,10 +64,24 @@ async function fetchGitHubStats(username: string) {
     .slice(0, 6) // Top 6 languages
     .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
 
-  return { stats, languages };
+  const result = { stats, languages };
+  
+  // Cache the result permanently
+  statsCache.set(cacheKey, result);
+
+  return result;
 }
 
 async function fetchGitHubContributions(username: string) {
+  // Check cache first
+  const cacheKey = username;
+  const cached = contributionsCache.get(cacheKey);
+  
+  if (cached) {
+    console.log("Using cached contributions for", username);
+    return cached;
+  }
+  
   const response = await fetch(
     `/api/github-contributions?username=${username}`,
   );
@@ -94,6 +120,9 @@ async function fetchGitHubContributions(username: string) {
       ),
     }),
   );
+
+  // Cache the result permanently
+  contributionsCache.set(cacheKey, contributions);
 
   return contributions;
 }
