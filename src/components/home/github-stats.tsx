@@ -179,7 +179,7 @@ export function GitHubStats() {
         </div>
 
         {/* GitHub Contribution Graph and Stats */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr,280px] gap-6 items-start">
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6 items-start">
           {/* Contribution Graph */}
           <div className="bg-background/50 border border-border/30 rounded-lg p-4">
             <h4 className="text-sm font-semibold text-muted-foreground mb-4">
@@ -189,7 +189,12 @@ export function GitHubStats() {
           </div>
 
           {/* Contribution Stats */}
-          <ContributionStats contributions={contributions} />
+          <div>
+            <h4 className="text-sm font-semibold text-muted-foreground mb-4">
+              Contribution Stats
+            </h4>
+            <ContributionStats contributions={contributions} />
+          </div>
         </div>
       </div>
     </motion.div>
