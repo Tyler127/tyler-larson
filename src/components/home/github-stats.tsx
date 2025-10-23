@@ -118,8 +118,8 @@ export function GitHubStats() {
         </div>
 
         {/* Most Used Languages */}
-        <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-muted-foreground">
+        <div className="bg-background/50 border border-border/30 rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-muted-foreground mb-4">
             Most Used Languages
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -178,19 +178,18 @@ export function GitHubStats() {
           </div>
         </div>
 
-        {/* GitHub Contribution Graph */}
-        <div className="mt-8 pt-8 border-t border-border/30">
-          <h4 className="text-base font-semibold text-muted-foreground mb-4">
-            Contribution Graph
-          </h4>
-
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr,280px] gap-6 items-start">
-            {/* Graph */}
+        {/* GitHub Contribution Graph and Stats */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr,280px] gap-6 items-start">
+          {/* Contribution Graph */}
+          <div className="bg-background/50 border border-border/30 rounded-lg p-4">
+            <h4 className="text-sm font-semibold text-muted-foreground mb-4">
+              Contribution Graph
+            </h4>
             <ContributionGraph contributions={contributions} />
-
-            {/* Stats Card */}
-            <ContributionStats contributions={contributions} />
           </div>
+
+          {/* Contribution Stats */}
+          <ContributionStats contributions={contributions} />
         </div>
       </div>
     </motion.div>

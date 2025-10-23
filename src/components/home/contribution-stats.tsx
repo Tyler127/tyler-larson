@@ -19,7 +19,7 @@ export function ContributionStats({ contributions }: ContributionStatsProps) {
 
   return (
     <div className="bg-background/50 border border-border/30 rounded-lg p-4 h-fit">
-      <h4 className="text-sm font-semibold mb-4">Contribution Stats</h4>
+      <h4 className="text-sm font-semibold text-muted-foreground mb-4">Contribution Stats</h4>
 
       {/* Total for the year */}
       <div className="mb-6">

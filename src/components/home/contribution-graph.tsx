@@ -146,7 +146,7 @@ export function ContributionGraph({
 
           <div className="flex gap-2 w-full">
             {/* Day labels */}
-            <div className="flex flex-col justify-between text-xs text-muted-foreground py-0.5 flex-shrink-0">
+            <div className="flex flex-col justify-between text-xs text-muted-foreground py-1 flex-shrink-0">
               <div>Mon</div>
               <div>Wed</div>
               <div>Fri</div>
@@ -156,7 +156,7 @@ export function ContributionGraph({
             {/* Contribution grid - flex to fill available space */}
             <div className="flex-1 overflow-x-auto scrollbar-hide">
               <div
-                className="grid gap-[2px]"
+                className="grid gap-[2px] p-0.5"
                 style={{
                   gridTemplateColumns: `repeat(${totalWeeks}, 1fr)`,
                   gridAutoFlow: "column",
