@@ -98,6 +98,141 @@ const getEventColor = (type: ContributionDetail["type"]) => {
   }
 };
 
+// Loading skeleton component
+function LoadingState({ count }: { count: number }) {
+  return (
+    <div className="space-y-4 mt-4">
+      {Array.from({ length: count > 5 ? 5 : count }).map((_, idx) => (
+        <div key={idx} className="border border-border/50 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Skeleton className="w-4 h-4 rounded-full mt-1" />
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+            <Skeleton className="w-8 h-8 rounded-md" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Error state component
+function ErrorState({ error, onRetry }: { error: string; onRetry: () => void }) {
+  return (
+    <div className="py-12 text-center">
+      <p className="text-red-500">{error}</p>
+      <button
+        onClick={onRetry}
+        className="mt-4 text-sm text-primary hover:underline"
+      >
+        Try again
+      </button>
+    </div>
+  );
+}
+
+// Empty state component
+function EmptyState({ count }: { count: number }) {
+  return (
+    <div className="py-12 text-center">
+      <p className="text-muted-foreground">
+        {count > 0
+          ? "Contributions to private repositories are hidden."
+          : "No detailed contribution data found for this date"}
+      </p>
+    </div>
+  );
+}
+
+// Details list component
+function DetailsList({ details }: { details: ContributionDetail[] }) {
+  return (
+    <div className="space-y-4 mt-4">
+      {details.map((detail, idx) => {
+        const CardContent = (
+          <>
+            <div className="flex items-start gap-3">
+              <div className="mt-1 text-muted-foreground">
+                {getEventIcon(detail.type)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                  <Badge
+                    variant="outline"
+                    className={getEventColor(detail.type)}
+                  >
+                    {getEventTypeLabel(detail.type)}
+                  </Badge>
+                  {detail.type !== "commit" && (
+                    <span className="text-xs text-muted-foreground">
+                      {formatTime(detail.occurredAt)}
+                    </span>
+                  )}
+                  {detail.commitCount && (
+                    <span className="text-xs text-muted-foreground">
+                      {detail.type === "commit" ? "" : "• "}
+                      {detail.commitCount}{" "}
+                      {detail.commitCount === 1 ? "commit" : "commits"}
+                    </span>
+                  )}
+                </div>
+                <div className="font-medium text-sm mb-1">
+                  {detail.repo}
+                </div>
+                {detail.title && (
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {detail.title}
+                  </p>
+                )}
+              </div>
+              {detail.type !== "commit" && detail.type !== "pullRequest" && (
+                <a
+                  href={detail.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors"
+                  aria-label="View on GitHub"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+          </>
+        );
+
+        if (detail.type === "pullRequest") {
+          return (
+            <a
+              key={idx}
+              href={detail.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block border border-border/50 rounded-lg p-4 transition-colors hover:bg-accent/50 cursor-pointer"
+            >
+              {CardContent}
+            </a>
+          );
+        }
+
+        return (
+          <div
+            key={idx}
+            className="border border-border/50 rounded-lg p-4 transition-colors"
+          >
+            {CardContent}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function ContributionDetailDialog({
   username,
   date,
@@ -191,120 +326,13 @@ export function ContributionDetailDialog({
         </DialogHeader>
 
         {loading ? (
-          <div className="space-y-4 mt-4">
-            {Array.from({ length: count > 5 ? 5 : count }).map((_, idx) => (
-              <div key={idx} className="border border-border/50 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Skeleton className="w-4 h-4 rounded-full mt-1" />
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Skeleton className="h-5 w-20" />
-                      <Skeleton className="h-4 w-16" />
-                    </div>
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-4 w-full" />
-                  </div>
-                  <Skeleton className="w-8 h-8 rounded-md" />
-                </div>
-              </div>
-            ))}
-          </div>
+          <LoadingState count={count} />
         ) : error ? (
-          <div className="py-12 text-center">
-            <p className="text-red-500">{error}</p>
-            <button
-              onClick={loadContributionDetails}
-              className="mt-4 text-sm text-primary hover:underline"
-            >
-              Try again
-            </button>
-          </div>
+          <ErrorState error={error} onRetry={loadContributionDetails} />
         ) : details.length > 0 ? (
-          <div className="space-y-4 mt-4">
-            {details.map((detail, idx) => {
-              const CardContent = (
-                <>
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 text-muted-foreground">
-                      {getEventIcon(detail.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <Badge
-                          variant="outline"
-                          className={getEventColor(detail.type)}
-                        >
-                          {getEventTypeLabel(detail.type)}
-                        </Badge>
-                        {detail.type !== "commit" && (
-                          <span className="text-xs text-muted-foreground">
-                            {formatTime(detail.occurredAt)}
-                          </span>
-                        )}
-                        {detail.commitCount && (
-                          <span className="text-xs text-muted-foreground">
-                            {detail.type === "commit" ? "" : "• "}
-                            {detail.commitCount}{" "}
-                            {detail.commitCount === 1 ? "commit" : "commits"}
-                          </span>
-                        )}
-                      </div>
-                      <div className="font-medium text-sm mb-1">
-                        {detail.repo}
-                      </div>
-                      {detail.title && (
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {detail.title}
-                        </p>
-                      )}
-                    </div>
-                    {detail.type !== "commit" && detail.type !== "pullRequest" && (
-                      <a
-                        href={detail.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors"
-                        aria-label="View on GitHub"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                </>
-              );
-
-              if (detail.type === "pullRequest") {
-                return (
-                  <a
-                    key={idx}
-                    href={detail.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block border border-border/50 rounded-lg p-4 transition-colors hover:bg-accent/50 cursor-pointer"
-                  >
-                    {CardContent}
-                  </a>
-                );
-              }
-
-              return (
-                <div
-                  key={idx}
-                  className="border border-border/50 rounded-lg p-4 transition-colors"
-                >
-                  {CardContent}
-                </div>
-              );
-            })}
-          </div>
+          <DetailsList details={details} />
         ) : (
-          <div className="py-12 text-center">
-            <p className="text-muted-foreground">
-              {count > 0
-                ? "Contributions to private repositories are hidden."
-                : "No detailed contribution data found for this date"}
-            </p>
-          </div>
+          <EmptyState count={count} />
         )}
         
         <DialogPrimitive.Close className="absolute top-4 right-4 rounded-full border border-black/20 dark:border-white p-1.5 opacity-70 hover:opacity-100 hover:bg-accent transition-all cursor-pointer">
