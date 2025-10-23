@@ -246,13 +246,11 @@ export function ContributionDetailDialog({
   const loadingRef = useRef(false);
 
   const loadContributionDetails = useCallback(async () => {
-    // Prevent duplicate calls
     if (loadingRef.current) return;
     
     const cacheKey = `${username}-${date}`;
-    
-    // Check cache first - if cached, set immediately without loading state
     const cached = detailsCache.get(cacheKey);
+    
     if (cached) {
       setDetails(cached);
       setLoading(false);
@@ -260,11 +258,10 @@ export function ContributionDetailDialog({
       return;
     }
 
-    // Not cached - set loading immediately for instant feedback
     loadingRef.current = true;
     setLoading(true);
     setError(null);
-    setDetails([]); // Clear old details
+    setDetails([]);
     
     try {
       const data = await fetchContributionDetails(username, date);
@@ -283,33 +280,12 @@ export function ContributionDetailDialog({
     }
   }, [username, date]);
 
+  // Only fetch when dialog opens - prefetching on hover usually means data is already cached
   useEffect(() => {
-    if (!isOpen) return;
-    
-    if (date && count > 0) {
-      const cacheKey = `${username}-${date}`;
-      const cached = detailsCache.get(cacheKey);
-      
-      if (cached) {
-        // Cached - show immediately
-        setDetails(cached);
-        setLoading(false);
-        setError(null);
-      } else {
-        // Not cached - show loading state immediately
-        setLoading(true);
-        setDetails([]);
-        setError(null);
-        // Start fetch asynchronously
-        loadContributionDetails();
-      }
-    } else {
-      // No contributions
-      setDetails([]);
-      setLoading(false);
-      setError(null);
+    if (isOpen && count > 0) {
+      loadContributionDetails();
     }
-  }, [isOpen, date, count, loadContributionDetails, username]);
+  }, [isOpen, count, loadContributionDetails]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
