@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ContributionWeek } from "./contribution-graph";
 
 interface GitHubStats {
@@ -326,10 +326,9 @@ export function useGitHubStats(username: string) {
   }, [username]);
 
   // Auto-fetch on mount
-  useMemo(() => {
+  useEffect(() => {
     fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
+  }, [fetch]);
 
   return { ...state, refetch: fetch };
 }
@@ -361,10 +360,9 @@ export function useGitHubContributions(username: string) {
   }, [username]);
 
   // Auto-fetch on mount
-  useMemo(() => {
+  useEffect(() => {
     fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
+  }, [fetch]);
 
   return { ...state, refetch: fetch };
 }

@@ -87,10 +87,8 @@ export function Navigation() {
     <>
       {/* Scroll Progress Bar - Always visible */}
       <motion.div
-        key={pathname}
         className="fixed top-0 left-0 right-0 h-0.5 bg-primary origin-left z-[60]"
         style={{ scaleX: scrollYProgress }}
-        initial={{ scaleX: 0 }}
       />
       
       <motion.nav

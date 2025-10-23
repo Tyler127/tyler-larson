@@ -1,9 +1,7 @@
-"use client";
-
 import { HeroSection } from "@/components/home/hero-section";
 import { WhatIDoSection } from "@/components/home/what-i-do-section";
 import { CTASection } from "@/components/home/cta-section";
-import { GitHubStatsLazy } from "@/components/home/github-stats";
+import { GitHubStats } from "@/components/home/github-stats";
 
 export default function Home() {
   return (
@@ -11,7 +9,7 @@ export default function Home() {
       {/* GitHub Stats Section */}
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3/4">
-          <GitHubStatsLazy />
+          <GitHubStats />
         </div>
       </section>
       

@@ -1,84 +1,49 @@
 "use client";
 
-import { lazy, Suspense, useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Github, GitFork, Star, Code2 } from "lucide-react";
 import { useGitHubStats, useGitHubContributions } from "./queries";
 import { prefetchContributionData, openContributionDialog } from "./contribution-dialog-manager";
+import { ContributionGraph, ContributionWeek } from "./contribution-graph";
+import { ContributionStats } from "./contribution-stats";
+import { ContributionDialogManager } from "./contribution-dialog-manager";
 
-// Lazy load the heavy components
-const ContributionGraph = lazy(() => 
-  import("./contribution-graph").then(module => ({ default: module.ContributionGraph }))
-);
-
-const ContributionStats = lazy(() =>
-  import("./contribution-stats").then(module => ({ default: module.ContributionStats }))
-);
-
-const ContributionDialogManager = lazy(() =>
-  import("./contribution-dialog-manager").then(module => ({ default: module.ContributionDialogManager }))
+// Loading skeleton
+const GitHubStatsLoading = () => (
+  <div className="p-8 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
+    <div className="flex items-center gap-3 mb-8">
+      <div className="w-6 h-6 rounded-full bg-muted animate-pulse" />
+      <div className="h-8 w-48 bg-muted animate-pulse rounded" />
+    </div>
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+          <div className="w-5 h-5 mx-auto mb-2 bg-muted animate-pulse rounded" />
+          <div className="h-6 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
+          <div className="h-4 w-16 mx-auto bg-muted animate-pulse rounded" />
+        </div>
+      ))}
+    </div>
+  </div>
 );
 
 export function GitHubStats() {
-  const [shouldRender, setShouldRender] = useState(false);
+  const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
+  const { contributions, loading: contributionsLoading } = useGitHubContributions("Tyler127");
 
-  useEffect(() => {
-    // Defer rendering to next tick to allow page navigation to complete first
-    const timer = setTimeout(() => {
-      setShouldRender(true);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!shouldRender) {
-    return (
-      <div className="p-8 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-6 h-6 rounded-full bg-muted animate-pulse" />
-          <div className="h-8 w-48 bg-muted animate-pulse rounded" />
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
-              <div className="w-5 h-5 mx-auto mb-2 bg-muted animate-pulse rounded" />
-              <div className="h-6 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
-              <div className="h-4 w-16 mx-auto bg-muted animate-pulse rounded" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+  // Show skeleton while loading
+  if (statsLoading || contributionsLoading || !stats) {
+    return <GitHubStatsLoading />;
   }
 
-  return <GitHubStatsContent />;
+  return <GitHubStatsContent stats={stats} languages={languages} contributions={contributions} />;
 }
 
-function GitHubStatsContent() {
-  const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
-  const { contributions } = useGitHubContributions("Tyler127");
-
-  const loading = statsLoading;
-
-  if (loading) {
-    return (
-      <Card className="p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Github className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold">GitHub Activity</h3>
-        </div>
-        <div className="animate-pulse space-y-3">
-          <div className="h-4 bg-muted rounded w-3/4"></div>
-          <div className="h-4 bg-muted rounded w-1/2"></div>
-          <div className="h-4 bg-muted rounded w-2/3"></div>
-        </div>
-      </Card>
-    );
-  }
-
-  if (!stats) {
-    return null;
-  }
+function GitHubStatsContent({ stats, languages, contributions }: {
+  stats: { publicRepos: number; followers: number; totalStars: number; totalForks: number };
+  languages: { [key: string]: number };
+  contributions: ContributionWeek[];
+}) {
 
   const totalRepos = Object.values(languages).reduce(
     (sum, count) => sum + count,
@@ -220,48 +185,15 @@ function GitHubStatsContent() {
             <h4 className="text-sm font-semibold text-muted-foreground mb-4">
               Contribution Graph
             </h4>
-            <Suspense fallback={
-              <div className="w-full">
-                {/* Skeleton for contribution graph */}
-                <div className="flex gap-4 mb-2">
-                  {[...Array(12)].map((_, i) => (
-                    <div key={i} className="text-xs text-muted-foreground h-4 w-8 animate-pulse bg-muted rounded" />
-                  ))}
-                </div>
-                <div className="flex gap-[2px]">
-                  {[...Array(53)].map((_, weekIdx) => (
-                    <div key={weekIdx} className="grid grid-rows-7 gap-[2px]">
-                      {[...Array(7)].map((_, dayIdx) => (
-                        <div
-                          key={`${weekIdx}-${dayIdx}`}
-                          className="aspect-square rounded-sm bg-muted/30 animate-pulse min-w-[10px] min-h-[10px]"
-                          style={{ animationDelay: `${(weekIdx * 7 + dayIdx) * 2}ms` }}
-                        />
-                      ))}
-                    </div>
-                  ))}
-                </div>
-                <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
-                  <span>Less</span>
-                  <div className="flex gap-[2px]">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="w-3 h-3 rounded-sm bg-muted/30 animate-pulse" />
-                    ))}
-                  </div>
-                  <span>More</span>
-                </div>
-              </div>
-            }>
-              <ContributionGraph 
-                contributions={contributions}
-                onDayClick={(date, count) => {
-                  openContributionDialog(date, count);
-                }}
-                onDayHover={(date, count) => {
-                  prefetchContributionData("Tyler127", date, count);
-                }}
-              />
-            </Suspense>
+            <ContributionGraph 
+              contributions={contributions}
+              onDayClick={(date, count) => {
+                openContributionDialog(date, count);
+              }}
+              onDayHover={(date, count) => {
+                prefetchContributionData("Tyler127", date, count);
+              }}
+            />
           </div>
 
           {/* Contribution Stats */}
@@ -269,25 +201,13 @@ function GitHubStatsContent() {
             <h4 className="text-sm font-semibold text-muted-foreground mb-4">
               Contribution Stats
             </h4>
-            <Suspense fallback={
-              <div className="space-y-4">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="p-4 rounded-lg bg-background/50 border border-border/30">
-                    <div className="h-12 bg-muted animate-pulse rounded" />
-                  </div>
-                ))}
-              </div>
-            }>
-              <ContributionStats contributions={contributions} />
-            </Suspense>
+            <ContributionStats contributions={contributions} />
           </div>
         </div>
       </div>
       
       {/* Dialog Manager - Completely isolated, no re-renders of graph */}
-      <Suspense fallback={null}>
-        <ContributionDialogManager username="Tyler127" />
-      </Suspense>
+      <ContributionDialogManager username="Tyler127" />
     </div>
   );
 }
