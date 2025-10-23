@@ -225,14 +225,9 @@ export function ContributionDetailDialog({
           <div className="py-12 text-center">
             <p className="text-muted-foreground">
               {count > 0
-                ? "No detailed contribution data found for this date"
-                : "No contributions on this day"}
+                ? "Contributions to private repositories are hidden."
+                : "No detailed contribution data found for this date"}
             </p>
-            {count > 0 && (
-              <p className="text-xs text-muted-foreground mt-2">
-                This may include contributions to private repositories
-              </p>
-            )}
           </div>
         )}
       </DialogContent>
