@@ -10,29 +10,29 @@ export function GitHubStatsSkeleton() {
           <div className="ml-auto text-sm text-muted-foreground">View Profile →</div>
         </div>
 
-        {/* Stats Grid - with skeleton */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
-            <Code2 className="w-5 h-5 mx-auto mb-2 text-primary" />
-            <div className="h-8 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
-            <div className="text-xs text-muted-foreground">Repositories</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
-            <Star className="w-5 h-5 mx-auto mb-2 text-yellow-500" />
-            <div className="h-8 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
-            <div className="text-xs text-muted-foreground">Stars</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
-            <GitFork className="w-5 h-5 mx-auto mb-2 text-primary" />
-            <div className="h-8 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
-            <div className="text-xs text-muted-foreground">Forks</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
-            <Github className="w-5 h-5 mx-auto mb-2 text-primary" />
-            <div className="h-8 w-12 mx-auto mb-1 bg-muted animate-pulse rounded" />
-            <div className="text-xs text-muted-foreground">Followers</div>
-          </div>
+      {/* Stats Grid - with skeleton */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+          <Code2 className="w-5 h-5 mx-auto mb-2 text-primary" />
+          <div className="text-2xl font-bold">0</div>
+          <div className="text-xs text-muted-foreground">Repositories</div>
         </div>
+        <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+          <Star className="w-5 h-5 mx-auto mb-2 text-yellow-500" />
+          <div className="text-2xl font-bold">0</div>
+          <div className="text-xs text-muted-foreground">Stars</div>
+        </div>
+        <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+          <GitFork className="w-5 h-5 mx-auto mb-2 text-primary" />
+          <div className="text-2xl font-bold">0</div>
+          <div className="text-xs text-muted-foreground">Forks</div>
+        </div>
+        <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+          <Github className="w-5 h-5 mx-auto mb-2 text-primary" />
+          <div className="text-2xl font-bold">0</div>
+          <div className="text-xs text-muted-foreground">Followers</div>
+        </div>
+      </div>
 
         {/* Most Used Languages - skeleton */}
         <div className="bg-background/50 border border-border/30 rounded-lg p-4">

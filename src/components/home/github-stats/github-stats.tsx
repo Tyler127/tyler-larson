@@ -8,6 +8,7 @@ import { ContributionGraph, ContributionWeek } from "./contribution-graph";
 import { ContributionStats } from "./contribution-stats";
 import { ContributionDialogManager } from "./contribution-dialog-manager";
 import { GitHubStatsSkeleton } from "./github-stats-skeleton";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 export function GitHubStats() {
   const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
@@ -75,7 +76,9 @@ function GitHubStatsContent({ stats, languages, contributions }: {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
             <Code2 className="w-5 h-5 mx-auto mb-2 text-primary" />
-            <div className="text-2xl font-bold">{stats.publicRepos}</div>
+            <div className="text-2xl font-bold">
+              <NumberTicker value={stats.publicRepos} />
+            </div>
             <div className="text-xs text-muted-foreground">
               {stats.publicRepos === 1 ? "Repository" : "Repositories"}
             </div>
@@ -83,7 +86,9 @@ function GitHubStatsContent({ stats, languages, contributions }: {
 
           <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
             <Star className="w-5 h-5 mx-auto mb-2 text-yellow-500" />
-            <div className="text-2xl font-bold">{stats.totalStars}</div>
+            <div className="text-2xl font-bold">
+              <NumberTicker value={stats.totalStars} />
+            </div>
             <div className="text-xs text-muted-foreground">
               {stats.totalStars === 1 ? "Star" : "Stars"}
             </div>
@@ -91,7 +96,9 @@ function GitHubStatsContent({ stats, languages, contributions }: {
 
           <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
             <GitFork className="w-5 h-5 mx-auto mb-2 text-primary" />
-            <div className="text-2xl font-bold">{stats.totalForks}</div>
+            <div className="text-2xl font-bold">
+              <NumberTicker value={stats.totalForks} />
+            </div>
             <div className="text-xs text-muted-foreground">
               {stats.totalForks === 1 ? "Fork" : "Forks"}
             </div>
@@ -99,7 +106,9 @@ function GitHubStatsContent({ stats, languages, contributions }: {
 
           <div className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
             <Github className="w-5 h-5 mx-auto mb-2 text-primary" />
-            <div className="text-2xl font-bold">{stats.followers}</div>
+            <div className="text-2xl font-bold">
+              <NumberTicker value={stats.followers} />
+            </div>
             <div className="text-xs text-muted-foreground">
               {stats.followers === 1 ? "Follower" : "Followers"}
             </div>
