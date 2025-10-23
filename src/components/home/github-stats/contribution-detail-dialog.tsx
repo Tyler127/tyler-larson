@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogHeader,
@@ -11,14 +12,22 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   GitCommit,
   GitPullRequest,
   FileText,
   Eye,
+  LayoutDashboard,
   ExternalLink,
   X,
 } from "lucide-react";
 import { fetchContributionDetails, ContributionDetail } from "./queries";
+import { projects } from "@/components/projects/projects-data";
 
 interface ContributionDetailDialogProps {
   username: string;
@@ -150,11 +159,43 @@ function EmptyState({ count }: { count: number }) {
   );
 }
 
+// Helper to check if repo matches a project and get the repo name
+function getProjectRepoName(repoFullName: string): string | null {
+  // Extract just the repo name from "owner/repo" format
+  const repoName = repoFullName.split('/').pop();
+  if (!repoName) return null;
+  
+  // Check if this repo exists in projects
+  const matchingProject = projects.find(project => 
+    project.github.toLowerCase().includes(repoName.toLowerCase())
+  );
+  
+  return matchingProject ? repoName : null;
+}
+
 // Details list component
-function DetailsList({ details }: { details: ContributionDetail[] }) {
+function DetailsList({ details, onClose }: { details: ContributionDetail[]; onClose: () => void }) {
+  const router = useRouter();
+
+  const handleViewProject = (repoName: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose(); // Close dialog before navigating
+    router.push(`/projects#project-${repoName}`);
+    
+    // Scroll to the project after navigation
+    setTimeout(() => {
+      const element = document.getElementById(`project-${repoName}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  };
+
   return (
     <div className="space-y-4 mt-4">
       {details.map((detail, idx) => {
+        const projectRepoName = getProjectRepoName(detail.repo);
         const CardContent = (
           <>
             <div className="flex items-start gap-3">
@@ -191,17 +232,37 @@ function DetailsList({ details }: { details: ContributionDetail[] }) {
                   </p>
                 )}
               </div>
-              {detail.type !== "commit" && detail.type !== "pullRequest" && (
-                <a
-                  href={detail.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors"
-                  aria-label="View on GitHub"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              )}
+              <div className="flex gap-1">
+                {projectRepoName && (
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={(e) => handleViewProject(projectRepoName, e)}
+                          className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors cursor-pointer"
+                          aria-label="View Project"
+                        >
+                          <LayoutDashboard className="w-4 h-4" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View Preview</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+                {detail.type !== "commit" && detail.type !== "pullRequest" && (
+                  <a
+                    href={detail.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 p-2 rounded-md hover:bg-accent transition-colors"
+                    aria-label="View on GitHub"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
             </div>
           </>
         );
@@ -306,7 +367,7 @@ export function ContributionDetailDialog({
         ) : error ? (
           <ErrorState error={error} onRetry={loadContributionDetails} />
         ) : details.length > 0 ? (
-          <DetailsList details={details} />
+          <DetailsList details={details} onClose={onClose} />
         ) : (
           <EmptyState count={count} />
         )}
