@@ -1,6 +1,6 @@
-# GitHub Token Setup (Optional)
+# GitHub Token Setup (REQUIRED)
 
-The API will work **without** a token, but adding one increases your rate limit from 60 to 5000 requests per hour.
+The GitHub contribution graph feature requires a GitHub Personal Access Token to access GitHub's GraphQL API. The token is **required** for the application to work properly in production.
 
 ## How to Create a GitHub Personal Access Token:
 
@@ -28,10 +28,14 @@ The API will work **without** a token, but adding one increases your rate limit 
 
 - The `.env.local` file is automatically ignored by git (won't be committed)
 - **Never commit your token to GitHub** - keep it in `.env.local` only
-- The API works fine without a token for personal use
-- With a token, you get 5000 requests/hour instead of 60
+- **The token is REQUIRED** - GitHub's GraphQL API requires authentication
+- With a token, you get 5000 requests/hour rate limit
 
-## Testing Without a Token:
+## For Production Deployment:
 
-The API route will work immediately without any token! Just refresh your page and the contribution graph should load with your real GitHub data.
+When deploying to production (Vercel, Netlify, etc.), you need to add the `GITHUB_TOKEN` as an environment variable in your hosting platform's dashboard:
+
+1. **Vercel**: Go to Project Settings → Environment Variables → Add `GITHUB_TOKEN`
+2. **Netlify**: Go to Site Settings → Environment Variables → Add `GITHUB_TOKEN`
+3. After adding the token, redeploy your site for the changes to take effect
 

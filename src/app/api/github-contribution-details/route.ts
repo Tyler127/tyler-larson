@@ -13,6 +13,18 @@ export async function GET(request: Request) {
   }
 
   const githubToken = process.env.GITHUB_TOKEN;
+  
+  if (!githubToken) {
+    console.error("GITHUB_TOKEN environment variable is not set");
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: "GitHub token not configured",
+        message: "GITHUB_TOKEN environment variable is required for this API. Please add it to your environment variables." 
+      },
+      { status: 500 }
+    );
+  }
 
   // Parse the date and get the date range
   const targetDate = new Date(date + "T00:00:00Z");

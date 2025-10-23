@@ -4,6 +4,20 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("username") || "Tyler127";
 
+  // Check if GitHub token is available
+  const githubToken = process.env.GITHUB_TOKEN;
+  
+  if (!githubToken) {
+    console.error("GITHUB_TOKEN environment variable is not set");
+    return NextResponse.json(
+      { 
+        error: "GitHub token not configured", 
+        message: "GITHUB_TOKEN environment variable is required for this API. Please add it to your environment variables." 
+      },
+      { status: 500 }
+    );
+  }
+
   try {
     // GitHub GraphQL query for contribution data
     const query = `
@@ -26,12 +40,8 @@ export async function GET(request: Request) {
 
     const headers: HeadersInit = {
       "Content-Type": "application/json",
+      "Authorization": `bearer ${githubToken}`,
     };
-
-    // Add GitHub token if available (optional but recommended for higher rate limits)
-    if (process.env.GITHUB_TOKEN) {
-      headers["Authorization"] = `bearer ${process.env.GITHUB_TOKEN}`;
-    }
 
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
