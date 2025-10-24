@@ -132,7 +132,7 @@ export function calculateMonthlyStats(contributions: ContributionWeek[]): {
   const busiestMonth =
     sortedMonths.length > 0
       ? sortedMonths.reduce((max, curr) => (curr[1] > max[1] ? curr : max))
-      : ["N/A", 0];
+      : ["N/A", 0] as [string, number];
 
   return { monthlyStats: sortedMonths, busiestMonth };
 }
