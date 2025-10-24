@@ -70,6 +70,7 @@ export interface ContributionGraphProps {
   showLegend?: boolean;
   showMonthLabels?: boolean;
   showDayLabels?: boolean;
+  showDetailDialog?: boolean; // Enable/disable contribution detail dialog (default: true)
   githubToken?: string; // Optional - reads from NEXT_PUBLIC_GITHUB_TOKEN if not provided
 }
 

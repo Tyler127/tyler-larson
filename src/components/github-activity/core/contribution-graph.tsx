@@ -10,6 +10,7 @@ import {
 import { ContributionGraphProps } from "../types";
 import { getContributionLevelColor } from "../utils/colors";
 import { useGitHubContributions } from "../hooks/use-github-contributions";
+import { ContributionDialogManager, openContributionDialog, prefetchContributionData } from "./contribution-dialog-manager";
 
 export function GitHubContributionGraph({
   username,
@@ -20,6 +21,7 @@ export function GitHubContributionGraph({
   showLegend = true,
   showMonthLabels = true,
   showDayLabels = true,
+  showDetailDialog = true,
   githubToken,
 }: ContributionGraphProps) {
   // Get username and token from env or props
@@ -217,14 +219,27 @@ export function GitHubContributionGraph({
                               transitionDelay: `${(weekIdx * 7 + dayIdx) * 3}ms`,
                             }}
                             onMouseEnter={() => {
-                              if (onDayHover && !day.date.startsWith("empty")) {
-                                onDayHover(day.date, day.count);
+                              if (!day.date.startsWith("empty")) {
+                                if (onDayHover) {
+                                  onDayHover(day.date, day.count);
+                                }
+                                // Prefetch data for dialog
+                                if (showDetailDialog && day.count > 0) {
+                                  prefetchContributionData(user, day.date, day.count, token);
+                                }
                               }
                             }}
                             onClick={(e) => {
                               e.preventDefault();
-                              if (onDayClick && !day.date.startsWith("empty")) {
-                                onDayClick(day.date, day.count);
+                              if (!day.date.startsWith("empty")) {
+                                // Call custom handler if provided
+                                if (onDayClick) {
+                                  onDayClick(day.date, day.count);
+                                }
+                                // Open dialog if enabled
+                                if (showDetailDialog && day.count > 0) {
+                                  openContributionDialog(day.date, day.count);
+                                }
                               }
                             }}
                           />
@@ -277,6 +292,11 @@ export function GitHubContributionGraph({
           )}
         </div>
       </TooltipProvider>
+      
+      {/* Dialog Manager for contribution details */}
+      {showDetailDialog && (
+        <ContributionDialogManager username={user} githubToken={token} />
+      )}
     </div>
   );
 }

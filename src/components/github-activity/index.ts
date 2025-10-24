@@ -5,6 +5,8 @@ export { GitHubContributionGraph } from "./core/contribution-graph";
 export { GitHubContributionStats } from "./core/contribution-stats";
 export { GitHubLanguageChart } from "./core/language-chart";
 export { GitHubActivityDashboard } from "./core/activity-dashboard";
+export { ContributionDetailDialog } from "./core/contribution-detail-dialog";
+export { ContributionDialogManager, openContributionDialog, prefetchContributionData } from "./core/contribution-dialog-manager";
 
 // Skeleton Components
 export {

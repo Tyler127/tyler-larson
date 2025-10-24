@@ -140,6 +140,46 @@ import { GitHubLanguageChart } from "@/components/github-activity";
 />
 ```
 
+### Contribution Detail Dialog
+
+The `GitHubContributionGraph` component includes an interactive dialog that shows detailed contribution information when clicking on a day. This feature is **enabled by default** but can be disabled:
+
+```tsx
+<GitHubContributionGraph 
+  showDetailDialog={false}  // Disable the contribution detail dialog
+/>
+```
+
+When enabled (default), clicking on any day with contributions will:
+1. Open a dialog showing all contributions for that day
+2. Display commits, pull requests, issues, and reviews
+3. Show repository names and contribution details
+4. Provide links to view contributions on GitHub
+
+**Note**: The dialog requires the `/api/github-contribution-details` API route to be set up in your Next.js project. See the [API Setup](#-api-setup) section below.
+
+**Custom Click Handlers**: You can also provide your own click handler while keeping the dialog:
+
+```tsx
+<GitHubContributionGraph 
+  onDayClick={(date, count) => {
+    console.log(`Clicked ${date} with ${count} contributions`);
+    // Dialog will still open automatically
+  }}
+/>
+```
+
+To use only your custom handler without the dialog:
+
+```tsx
+<GitHubContributionGraph 
+  showDetailDialog={false}
+  onDayClick={(date, count) => {
+    // Your custom logic here
+  }}
+/>
+```
+
 ## 📋 TypeScript Types
 
 All types are exported and can be imported:
@@ -150,6 +190,7 @@ import {
   LanguageStats,
   ContributionDay,
   ContributionWeek,
+  ContributionDetail,
   ContributionGraphProps,
   // ... more types
 } from "@/components/github-activity";
