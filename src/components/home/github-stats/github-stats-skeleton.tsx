@@ -39,15 +39,24 @@ export function GitHubStatsSkeleton() {
           <h4 className="text-sm font-semibold text-muted-foreground mb-4">
             Most Used Languages
           </h4>
-          <div className="space-y-4">
-            {[...Array(5)].map((_, i) => (
-              <div key={i}>
-                <div className="flex justify-between mb-2">
+          <div className="flex flex-wrap gap-2">
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="h-7 rounded-md bg-muted animate-pulse"
+                style={{ width: `${80 + (i * 7) % 40}px` }}
+              />
+            ))}
+          </div>
+          <div className="mt-4 space-y-2">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="space-y-1">
+                <div className="flex justify-between text-xs">
                   <div className="h-4 w-24 bg-muted animate-pulse rounded" />
                   <div className="h-4 w-16 bg-muted animate-pulse rounded" />
                 </div>
                 <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-muted/50 rounded-full" style={{ width: `${(5 - i) * 20}%` }} />
+                  <div className="h-full bg-muted/50 rounded-full" style={{ width: `${(6 - i) * 16.6}%` }} />
                 </div>
               </div>
             ))}
