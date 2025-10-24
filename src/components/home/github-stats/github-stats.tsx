@@ -126,8 +126,24 @@ function GitHubStatsContent({ stats, languages, contributions }: {
           </div>
         </div>
 
-        {/* Most Used Languages */}
+        {/* GitHub Contribution Graph */}
         <div className="bg-background/50 border border-border/30 rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-muted-foreground mb-4">
+            Contribution Graph
+          </h4>
+          <ContributionGraph 
+            contributions={contributions}
+            onDayClick={(date, count) => {
+              openContributionDialog(date, count);
+            }}
+            onDayHover={(date, count) => {
+              prefetchContributionData("Tyler127", date, count);
+            }}
+          />
+        </div>
+
+        {/* Most Used Languages */}
+        <div className="mt-8 bg-background/50 border border-border/30 rounded-lg p-4">
           <h4 className="text-sm font-semibold text-muted-foreground mb-4">
             Most Used Languages
           </h4>
@@ -188,31 +204,12 @@ function GitHubStatsContent({ stats, languages, contributions }: {
           </div>
         </div>
 
-        {/* GitHub Contribution Graph and Stats */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6 items-start">
-          {/* Contribution Graph */}
-          <div className="bg-background/50 border border-border/30 rounded-lg p-4">
-            <h4 className="text-sm font-semibold text-muted-foreground mb-4">
-              Contribution Graph
-            </h4>
-            <ContributionGraph 
-              contributions={contributions}
-              onDayClick={(date, count) => {
-                openContributionDialog(date, count);
-              }}
-              onDayHover={(date, count) => {
-                prefetchContributionData("Tyler127", date, count);
-              }}
-            />
-          </div>
-
-          {/* Contribution Stats */}
-          <div>
-            <h4 className="text-sm font-semibold text-muted-foreground mb-4">
-              Contribution Stats
-            </h4>
-            <ContributionStats contributions={contributions} />
-          </div>
+        {/* Contribution Stats */}
+        <div className="mt-8">
+          <h4 className="text-sm font-semibold text-muted-foreground mb-4">
+            Contribution Stats
+          </h4>
+          <ContributionStats contributions={contributions} />
         </div>
       </div>
       

@@ -34,42 +34,11 @@ export function GitHubStatsSkeleton() {
         </div>
       </div>
 
-        {/* Most Used Languages - skeleton */}
+        {/* Contribution Graph - skeleton */}
         <div className="bg-background/50 border border-border/30 rounded-lg p-4">
           <h4 className="text-sm font-semibold text-muted-foreground mb-4">
-            Most Used Languages
+            Contribution Graph
           </h4>
-          <div className="flex flex-wrap gap-2">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="h-7 rounded-md bg-muted animate-pulse"
-                style={{ width: `${80 + (i * 7) % 40}px` }}
-              />
-            ))}
-          </div>
-          <div className="mt-4 space-y-2">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <div className="h-4 w-24 bg-muted animate-pulse rounded" />
-                  <div className="h-4 w-16 bg-muted animate-pulse rounded" />
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-muted/50 rounded-full" style={{ width: `${(6 - i) * 16.6}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Contribution Graph and Stats - skeleton */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6 items-start">
-          {/* Contribution Graph skeleton - full grid */}
-          <div className="bg-background/50 border border-border/30 rounded-lg p-4">
-            <h4 className="text-sm font-semibold text-muted-foreground mb-4">
-              Contribution Graph
-            </h4>
             <div className="w-full">
               {/* Month labels with proper positioning */}
               <div className="relative mb-3 h-4 overflow-hidden">
@@ -130,13 +99,44 @@ export function GitHubStatsSkeleton() {
                 <span>More</span>
               </div>
             </div>
-          </div>
+        </div>
 
-          {/* Contribution Stats skeleton */}
-          <div>
-            <h4 className="text-sm font-semibold text-muted-foreground mb-4">
-              Contribution Stats
-            </h4>
+        {/* Most Used Languages - skeleton */}
+        <div className="mt-8 bg-background/50 border border-border/30 rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-muted-foreground mb-4">
+            Most Used Languages
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="h-7 rounded-md bg-muted animate-pulse"
+                style={{ width: `${80 + (i * 7) % 40}px` }}
+              />
+            ))}
+          </div>
+          <div className="mt-4 space-y-2">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="space-y-1">
+                <div className="flex justify-between text-xs">
+                  <div className="h-4 w-24 bg-muted animate-pulse rounded" />
+                  <div className="h-4 w-16 bg-muted animate-pulse rounded" />
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-muted/50 rounded-full" style={{ width: `${(6 - i) * 16.6}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Contribution Stats skeleton */}
+        <div className="mt-8">
+          <h4 className="text-sm font-semibold text-muted-foreground mb-4">
+            Contribution Stats
+          </h4>
+          <div className="space-y-4">
+            {/* Key Metrics Grid */}
             <div className="grid grid-cols-2 gap-4">
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
@@ -144,6 +144,30 @@ export function GitHubStatsSkeleton() {
                   <div className="h-6 w-8 mx-auto bg-muted animate-pulse rounded" />
                 </div>
               ))}
+            </div>
+            {/* Additional Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="text-center p-4 rounded-lg bg-background/50 border border-border/30">
+                  <div className="h-4 w-16 mx-auto mb-1 bg-muted animate-pulse rounded" />
+                  <div className="h-5 w-10 mx-auto bg-muted animate-pulse rounded" />
+                </div>
+              ))}
+            </div>
+            {/* Activity by Day */}
+            <div className="bg-background/50 border border-border/30 rounded-lg p-4">
+              <div className="h-4 w-24 mb-3 bg-muted animate-pulse rounded" />
+              <div className="space-y-2">
+                {[...Array(7)].map((_, i) => (
+                  <div key={i} className="space-y-1">
+                    <div className="flex justify-between items-center">
+                      <div className="h-3 w-8 bg-muted animate-pulse rounded" />
+                      <div className="h-3 w-8 bg-muted animate-pulse rounded" />
+                    </div>
+                    <div className="h-1.5 bg-muted rounded-full" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
