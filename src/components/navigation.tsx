@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, MoonStar, Sun } from "lucide-react";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
@@ -24,6 +24,7 @@ export function Navigation() {
     { href: "/experience", label: "Experience" },
     { href: "/projects", label: "Projects" },
     { href: "/github", label: "GitHub" },
+    { href: "/components", label: "Components" },
     { href: "/resume", label: "Resume" },
   ];
 
@@ -119,7 +120,9 @@ export function Navigation() {
               }
               style={{ top: 4 }}
             />
-            {links.map((link) => (
+            {links.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+              return (
               <Link
                 key={link.href}
                 href={link.href}
@@ -130,14 +133,15 @@ export function Navigation() {
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
                 className={`relative text-sm font-medium transition-colors hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm px-3 py-1 z-10 ${
-                  pathname === link.href
+                  isActive
                     ? "text-primary"
                     : "text-muted-foreground"
                 }`}
               >
                 {link.label}
               </Link>
-            ))}
+              );
+            })}
             
             {/* Theme Toggle Button */}
             <Button
@@ -199,12 +203,14 @@ export function Navigation() {
             exit={{ opacity: 0, y: -20 }}
             className="md:hidden py-4 border-t border-border"
           >
-            {links.map((link) => (
+            {links.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+              return (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`block py-2 text-sm font-medium transition-colors hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm ${
-                  pathname === link.href
+                  isActive
                     ? "text-foreground"
                     : "text-muted-foreground"
                 }`}
@@ -212,7 +218,8 @@ export function Navigation() {
               >
                 {link.label}
               </Link>
-            ))}
+              );
+            })}
           </motion.div>
         )}
       </div>
