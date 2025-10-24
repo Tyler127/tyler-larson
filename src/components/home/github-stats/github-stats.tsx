@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Github, GitFork, Star, Code2 } from "lucide-react";
 import { useGitHubStats, useGitHubContributions } from "./queries";
@@ -14,7 +15,7 @@ export function GitHubStats() {
   const { stats, languages, loading: statsLoading } = useGitHubStats("Tyler127");
   const { contributions } = useGitHubContributions("Tyler127");
 
-  // Show skeleton while stats are loading
+  // Show skeleton while stats are loading (for initial render only)
   if (statsLoading || !stats) {
     return <GitHubStatsSkeleton />;
   }
@@ -32,6 +33,16 @@ function GitHubStatsContent({ stats, languages, contributions }: {
   languages: { [key: string]: number };
   contributions: ContributionWeek[];
 }) {
+  // State to trigger animations after component mounts
+  const [animateLanguages, setAnimateLanguages] = useState(true);
+
+  useEffect(() => {
+    // Trigger animation after a brief delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      setAnimateLanguages(false);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const totalRepos = Object.values(languages).reduce(
     (sum, count) => sum + count,
@@ -121,15 +132,17 @@ function GitHubStatsContent({ stats, languages, contributions }: {
             Most Used Languages
           </h4>
           <div className="flex flex-wrap gap-2">
-            {Object.entries(languages).map(([language, count]) => {
+            {Object.entries(languages).map(([language, count], index) => {
               const percentage = ((count / totalRepos) * 100).toFixed(1);
               return (
                 <Badge
                   key={language}
                   variant="outline"
-                  className="flex items-center gap-2 px-3 py-1"
+                  className="flex items-center gap-2 px-3 py-1 transition-opacity duration-300"
                   style={{
                     borderColor: languageColors[language] || "#666",
+                    opacity: animateLanguages ? 0 : 1,
+                    transitionDelay: `${index * 50}ms`,
                   }}
                 >
                   <span
@@ -149,7 +162,7 @@ function GitHubStatsContent({ stats, languages, contributions }: {
 
           {/* Language Bar Chart */}
           <div className="mt-4 space-y-2">
-            {Object.entries(languages).map(([language, count]) => {
+            {Object.entries(languages).map(([language, count], index) => {
               const percentage = (count / totalRepos) * 100;
               return (
                 <div key={language} className="space-y-1">
@@ -161,10 +174,11 @@ function GitHubStatsContent({ stats, languages, contributions }: {
                   </div>
                   <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
-                      className="h-full rounded-full"
+                      className="h-full rounded-full transition-[width] duration-500 ease-out"
                       style={{
-                        width: `${percentage}%`,
+                        width: animateLanguages ? "0%" : `${percentage}%`,
                         backgroundColor: languageColors[language] || "#666",
+                        transitionDelay: `${index * 75}ms`,
                       }}
                     />
                   </div>
