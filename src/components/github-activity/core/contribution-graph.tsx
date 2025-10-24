@@ -156,7 +156,7 @@ export function GitHubContributionGraph({
 
   return (
     <div className={`w-full ${className}`}>
-      <TooltipProvider delayDuration={0}>
+      <TooltipProvider delayDuration={0} skipDelayDuration={0} disableHoverableContent={true}>
         <div className="w-full">
           {/* Month labels */}
           {showMonthLabels && (
@@ -245,7 +245,10 @@ export function GitHubContributionGraph({
                           />
                         </TooltipTrigger>
                         {!day.date.startsWith("empty") && (
-                          <TooltipContent>
+                          <TooltipContent
+                            side="top"
+                            className="pointer-events-none"
+                          >
                             <p className="text-xs font-medium">
                               {day.count}{" "}
                               {day.count === 1 ? "contribution" : "contributions"}
@@ -275,7 +278,10 @@ export function GitHubContributionGraph({
                         className={`w-3 h-3 rounded-sm cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all ${getLevelColor(level as 0 | 1 | 2 | 3 | 4)}`}
                       />
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent
+                      side="top"
+                      className="pointer-events-none"
+                    >
                       <p className="text-xs">
                         {level === 0 && "0 contributions"}
                         {level === 1 && "1-2 contributions"}
