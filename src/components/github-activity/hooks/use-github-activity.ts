@@ -14,7 +14,6 @@ import {
 
 interface UseGitHubActivityOptions {
   token?: string;
-  cache?: boolean;
   useApiRoute?: boolean;
   apiEndpoint?: string;
 }
@@ -39,7 +38,6 @@ export function useGitHubActivity(
 ): UseGitHubActivityReturn {
   const {
     token,
-    cache = true,
     useApiRoute = false,
     apiEndpoint = "/api/github-contributions",
   } = options;
