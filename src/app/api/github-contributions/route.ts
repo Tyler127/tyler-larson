@@ -20,6 +20,8 @@ export async function GET(request: Request) {
 
   try {
     // GitHub GraphQL query for contribution data
+    // Note: contributionCount may differ slightly from detailed contributions
+    // because GitHub groups related commits differently in the calendar vs detailed APIs
     const query = `
       query($username: String!) {
         user(login: $username) {

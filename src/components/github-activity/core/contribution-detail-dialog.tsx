@@ -415,6 +415,14 @@ export function ContributionDetailDialog({
   const [error, setError] = useState<string | null>(null);
   const loadingRef = useRef(false);
 
+  // Calculate actual contribution count from details
+  const actualCount = details.reduce((total, detail) => {
+    if (detail.type === "commit" && detail.commitCount) {
+      return total + detail.commitCount;
+    }
+    return total + 1;
+  }, 0);
+
   const loadContributionDetails = useCallback(async () => {
     if (loadingRef.current) return;
     
@@ -466,7 +474,16 @@ export function ContributionDetailDialog({
             Contributions on {formatDate(date)}
           </DialogTitle>
           <DialogDescription>
-            {count} {count === 1 ? "contribution" : "contributions"} on this day
+            {actualCount > 0 ? actualCount : count}{" "}
+            {(actualCount > 0 ? actualCount : count) === 1
+              ? "contribution"
+              : "contributions"}{" "}
+            on this day
+            {actualCount > 0 && actualCount !== count && (
+              <span className="text-xs text-muted-foreground ml-2">
+                (GitHub calendar shows {count})
+              </span>
+            )}
           </DialogDescription>
         </DialogHeader>
 
