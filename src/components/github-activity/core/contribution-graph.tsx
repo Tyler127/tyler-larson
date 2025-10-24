@@ -7,10 +7,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ContributionGraphProps } from "../types";
-import { getContributionLevelColor } from "../utils/colors";
-import { useGitHubContributions } from "../hooks/use-github-contributions";
-import { ContributionDialogManager, openContributionDialog, prefetchContributionData } from "./contribution-dialog-manager";
+import { ContributionGraphProps } from "@/components/github-activity/types";
+import { getContributionLevelColor } from "@/components/github-activity/utils/colors";
+import { useGitHubContributions } from "@/components/github-activity/hooks/use-github-contributions";
+import { ContributionDialogManager, openContributionDialog, prefetchContributionData } from "@/components/github-activity/core/contribution-dialog-manager";
 
 export function GitHubContributionGraph({
   username,

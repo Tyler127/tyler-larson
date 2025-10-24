@@ -18,7 +18,7 @@ import {
   ExternalLink,
   X,
 } from "lucide-react";
-import { ContributionDetail } from "../types";
+import { ContributionDetail } from "@/components/github-activity/types";
 
 interface ContributionDetailDialogProps {
   username: string;

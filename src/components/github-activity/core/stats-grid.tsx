@@ -1,7 +1,7 @@
 "use client";
 
-import { StatsGridProps } from "../types";
-import { GitHubStatCard } from "./stat-card";
+import { StatsGridProps } from "@/components/github-activity/types";
+import { GitHubStatCard } from "@/components/github-activity/core/stat-card";
 
 export function GitHubStatsGrid({
   username,

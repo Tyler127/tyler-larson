@@ -1,13 +1,13 @@
 "use client";
 
 import { Github } from "lucide-react";
-import { ActivityDashboardProps } from "../types";
-import { GitHubStatsGrid } from "./stats-grid";
-import { GitHubContributionGraph } from "./contribution-graph";
-import { GitHubLanguageChart } from "./language-chart";
-import { GitHubContributionStats } from "./contribution-stats";
-import { GitHubActivityDashboardSkeleton } from "./skeleton";
-import { useGitHubActivity } from "../hooks/use-github-activity";
+import { ActivityDashboardProps } from "@/components/github-activity/types";
+import { GitHubStatsGrid } from "@/components/github-activity/core/stats-grid";
+import { GitHubContributionGraph } from "@/components/github-activity/core/contribution-graph";
+import { GitHubLanguageChart } from "@/components/github-activity/core/language-chart";
+import { GitHubContributionStats } from "@/components/github-activity/core/contribution-stats";
+import { GitHubActivityDashboardSkeleton } from "@/components/github-activity/core/skeleton";
+import { useGitHubActivity } from "@/components/github-activity/hooks/use-github-activity";
 
 export function GitHubActivityDashboard({
   username,

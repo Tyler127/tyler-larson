@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { GitHubStats, UseGitHubStatsOptions } from "../types";
-import { fetchGitHubUser, fetchGitHubRepos } from "../utils/github-api";
+import { GitHubStats, UseGitHubStatsOptions } from "@/components/github-activity/types";
+import { fetchGitHubUser, fetchGitHubRepos } from "@/components/github-activity/utils/github-api";
 
 interface UseGitHubStatsReturn {
   stats: GitHubStats | null;

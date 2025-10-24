@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
-import { LanguageChartProps } from "../types";
-import { getLanguageColor } from "../utils/colors";
-import { useGitHubLanguages } from "../hooks/use-github-languages";
+import { LanguageChartProps } from "@/components/github-activity/types";
+import { getLanguageColor } from "@/components/github-activity/utils/colors";
+import { useGitHubLanguages } from "@/components/github-activity/hooks/use-github-languages";
 
 export function GitHubLanguageChart({
   username,

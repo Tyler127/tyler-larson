@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, GraduationCap } from "lucide-react";
-import { Education } from "./experience-data";
+import { Education } from "@/components/experience/experience-data";
 
 interface EducationSectionProps {
   education: Education[];

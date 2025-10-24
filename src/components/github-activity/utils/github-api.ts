@@ -1,5 +1,5 @@
-import { ContributionWeek } from "../types";
-import { getContributionLevel } from "./calculations";
+import { ContributionWeek } from "@/components/github-activity/types";
+import { getContributionLevel } from "@/components/github-activity/utils/calculations";
 
 // Cache storage
 const cache = new Map<string, { data: any; timestamp: number }>();

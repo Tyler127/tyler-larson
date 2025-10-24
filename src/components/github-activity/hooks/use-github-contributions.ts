@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { ContributionWeek, UseGitHubContributionsOptions } from "../types";
+import { ContributionWeek, UseGitHubContributionsOptions } from "@/components/github-activity/types";
 import {
   fetchGitHubContributionsGraphQL,
   fetchGitHubContributionsViaAPI,
-} from "../utils/github-api";
+} from "@/components/github-activity/utils/github-api";
 
 interface UseGitHubContributionsReturn {
   contributions: ContributionWeek[];

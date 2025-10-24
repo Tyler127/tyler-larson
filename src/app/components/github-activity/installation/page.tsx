@@ -1,6 +1,6 @@
 "use client";
 
-import { CodeBlock } from "../_components/component-section";
+import { CodeBlock } from "@/components/components/code-block";
 
 export default function InstallationPage() {
   return (

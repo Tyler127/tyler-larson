@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp, Flame, Calendar, BarChart3 } from "lucide-react";
-import { ContributionStatsProps } from "../types";
+import { ContributionStatsProps } from "@/components/github-activity/types";
 import {
   calculateTotalContributions,
   calculateCurrentStreak,
@@ -10,8 +10,8 @@ import {
   calculateMonthlyStats,
   calculateDayOfWeekStats,
   getMostActiveDay,
-} from "../utils/calculations";
-import { useGitHubContributions } from "../hooks/use-github-contributions";
+} from "@/components/github-activity/utils/calculations";
+import { useGitHubContributions } from "@/components/github-activity/hooks/use-github-contributions";
 
 export function GitHubContributionStats({
   username,

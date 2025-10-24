@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ContributionDetailDialog, detailsCache } from "./contribution-detail-dialog";
-import { ContributionDetail } from "../types";
+import { ContributionDetailDialog, detailsCache } from "@/components/github-activity/core/contribution-detail-dialog";
+import { ContributionDetail } from "@/components/github-activity/types";
 
 // Track in-progress fetches to prevent duplicates
 const fetchInProgress = new Map<string, Promise<unknown>>();

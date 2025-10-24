@@ -1,7 +1,7 @@
 "use client";
 
 import { GitHubContributionStats } from "@/components/github-activity";
-import { ComponentPreview } from "../_components/component-preview";
+import { ComponentPreview } from "@/components/components/component-preview";
 
 const DEMO_USERNAME = "Tyler127";
 

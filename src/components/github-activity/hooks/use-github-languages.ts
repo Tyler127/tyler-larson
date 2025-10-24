@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { LanguageStats, UseGitHubStatsOptions } from "../types";
-import { fetchGitHubRepos } from "../utils/github-api";
+import { LanguageStats, UseGitHubStatsOptions } from "@/components/github-activity/types";
+import { fetchGitHubRepos } from "@/components/github-activity/utils/github-api";
 
 interface UseGitHubLanguagesReturn {
   languages: LanguageStats;

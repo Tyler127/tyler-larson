@@ -5,14 +5,12 @@ import {
   GitHubStats,
   LanguageStats,
   ContributionWeek,
-  UseGitHubStatsOptions,
-  UseGitHubContributionsOptions,
-} from "../types";
-import { fetchGitHubUser, fetchGitHubRepos } from "../utils/github-api";
+} from "@/components/github-activity/types";
+import { fetchGitHubUser, fetchGitHubRepos } from "@/components/github-activity/utils/github-api";
 import {
   fetchGitHubContributionsGraphQL,
   fetchGitHubContributionsViaAPI,
-} from "../utils/github-api";
+} from "@/components/github-activity/utils/github-api";
 
 interface UseGitHubActivityOptions {
   token?: string;

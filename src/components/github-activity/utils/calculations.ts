@@ -1,4 +1,4 @@
-import { ContributionWeek } from "../types";
+import { ContributionWeek } from "@/components/github-activity/types";
 
 // Calculate contribution level based on count
 export function getContributionLevel(count: number): 0 | 1 | 2 | 3 | 4 {

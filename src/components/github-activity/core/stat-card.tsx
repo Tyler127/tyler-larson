@@ -1,8 +1,8 @@
 "use client";
 
-import { StatCardProps } from "../types";
+import { StatCardProps } from "@/components/github-activity/types";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { useGitHubStats } from "../hooks/use-github-stats";
+import { useGitHubStats } from "@/components/github-activity/hooks/use-github-stats";
 import { Code2, Star, GitFork, Github } from "lucide-react";
 
 export function GitHubStatCard({
