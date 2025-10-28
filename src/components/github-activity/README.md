@@ -210,7 +210,6 @@ const { stats, languages, contributions, loading, error, refetch } = useGitHubAc
   {
     token: "ghp_your_token_here", // Optional but recommended
     useApiRoute: false, // Set to true to use Next.js API routes instead
-    cache: true, // Enable caching (default: true)
   }
 );
 ```
