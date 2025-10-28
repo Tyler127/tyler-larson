@@ -298,7 +298,6 @@ After deploying:
 1. **Test Everything**
    - [ ] All pages load correctly
    - [ ] Navigation works
-   - [ ] Resume downloads
    - [ ] Mobile responsiveness
    - [ ] Dark/light mode (if implemented)
 

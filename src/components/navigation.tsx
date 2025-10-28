@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, MoonStar, Sun } from "lucide-react";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
@@ -23,7 +23,6 @@ export function Navigation() {
     { href: "/", label: "Home" },
     { href: "/experience", label: "Experience" },
     { href: "/projects", label: "Projects" },
-    { href: "/resume", label: "Resume" },
   ];
 
   useEffect(() => {

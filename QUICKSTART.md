@@ -23,16 +23,6 @@ npm run dev
 2. **Home Page**: `src/app/page.tsx` line ~96
 3. **Layout Metadata**: `src/app/layout.tsx` line 16
 
-### Update Contact Info
-
-**File**: `src/app/resume/page.tsx` (lines ~150-155)
-
-Replace:
-- Email address
-- Phone number
-- LinkedIn URL
-- GitHub URL
-- Location
 
 ### Update Work Experience
 
@@ -40,20 +30,6 @@ Replace:
 
 Edit the `experiences` array with your actual work history.
 
-### Update Skills
-
-**File**: `src/app/resume/page.tsx` (lines ~157-164)
-
-Modify the `skills` object with your technologies.
-
-## Step 3: Test Your Changes
-
-Save your files and watch the browser automatically reload! ✨
-
-Check all three pages:
-- Home: http://localhost:3000
-- Experience: http://localhost:3000/experience
-- Resume: http://localhost:3000/resume
 
 ## Step 4: Build for Production
 
@@ -142,7 +118,6 @@ Before deploying:
 - [ ] Added certifications
 - [ ] Tested all pages
 - [ ] Tested on mobile (Chrome DevTools)
-- [ ] Resume downloads correctly
 - [ ] No placeholder text remaining
 - [ ] Ran `npm run build` successfully
 
@@ -151,7 +126,6 @@ Before deploying:
 You now have a professional portfolio website with:
 - ✅ Modern, responsive design
 - ✅ Smooth animations
-- ✅ Downloadable resume
 - ✅ Mobile-friendly
 - ✅ Production-ready
 
