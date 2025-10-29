@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Tyler Larson - Portfolio",
-  description: "Personal portfolio and resume website",
+  description: "Personal portfolio website showcasing experience and projects",
 };
 
 export default function RootLayout({

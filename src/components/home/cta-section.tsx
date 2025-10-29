@@ -21,14 +21,14 @@ export function CTASection() {
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Interested in working together? Check out my experience and
-            resume, or get in touch!
+            projects, or get in touch!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
               <Link href="/experience">View Experience</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/resume">Download Resume</Link>
+              <Link href="/projects">View Projects</Link>
             </Button>
           </div>
         </Card>
