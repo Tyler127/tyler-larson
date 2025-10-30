@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react";
 
 const sidebarSections = [
   {
-    title: "Overview",
+    title: "Components Library",
     items: [
       { id: "overview", name: "Overview", href: "/components" },
     ]
@@ -16,6 +16,7 @@ const sidebarSections = [
   {
     title: "GitHub Activity",
     items: [
+      { id: "github-overview", name: "Overview", href: "/components/github-activity/overview" },
       { id: "stat-card", name: "GitHubStatCard", href: "/components/github-activity/stat-card" },
       { id: "stats-grid", name: "GitHubStatsGrid", href: "/components/github-activity/stats-grid" },
       { id: "language-chart", name: "GitHubLanguageChart", href: "/components/github-activity/language-chart" },

@@ -2,28 +2,28 @@
 
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code2, BarChart3, Calendar, TrendingUp, Sparkles } from "lucide-react";
+import { Code2, Boxes, Rocket, Palette } from "lucide-react";
 
-export default function ComponentsOverview() {
+export default function ComponentsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-3xl font-bold mb-4">Component Library Overview</h2>
-        <p className="text-lg text-muted-foreground">
-          A collection of reusable React components designed to showcase GitHub activity, statistics, and contribution data in beautiful, customizable ways.
+        <h1 className="text-4xl font-bold mb-4">Components Library</h1>
+        <p className="text-xl text-muted-foreground">
+          A collection of production-ready, reusable React components built for modern web applications. Each component is designed with flexibility, performance, and developer experience in mind.
         </p>
       </div>
 
-      {/* Features Grid */}
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* Key Benefits */}
+      <div className="grid md:grid-cols-2 gap-6 mt-12">
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <CardTitle>Zero Configuration</CardTitle>
+              <Rocket className="w-5 h-5 text-primary" />
+              <CardTitle>Production Ready</CardTitle>
             </div>
             <CardDescription>
-              Just add your GitHub username to environment variables and components auto-fetch everything
+              Battle-tested components with built-in error handling, loading states, and responsive design
             </CardDescription>
           </CardHeader>
         </Card>
@@ -32,10 +32,10 @@ export default function ComponentsOverview() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Code2 className="w-5 h-5 text-primary" />
-              <CardTitle>Fully Customizable</CardTitle>
+              <CardTitle>Developer Friendly</CardTitle>
             </div>
             <CardDescription>
-              Built with Tailwind CSS, every component supports custom styling and theming
+              Fully typed with TypeScript, documented with examples, and easy to customize
             </CardDescription>
           </CardHeader>
         </Card>
@@ -43,11 +43,11 @@ export default function ComponentsOverview() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-primary" />
-              <CardTitle>Real GitHub Data</CardTitle>
+              <Palette className="w-5 h-5 text-primary" />
+              <CardTitle>Beautifully Designed</CardTitle>
             </div>
             <CardDescription>
-              Powered by GitHub's REST and GraphQL APIs for accurate, real-time statistics
+              Modern UI with Tailwind CSS, dark mode support, and consistent design patterns
             </CardDescription>
           </CardHeader>
         </Card>
@@ -55,108 +55,101 @@ export default function ComponentsOverview() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              <CardTitle>Production Ready</CardTitle>
+              <Boxes className="w-5 h-5 text-primary" />
+              <CardTitle>Modular & Composable</CardTitle>
             </div>
             <CardDescription>
-              Includes loading states, error handling, caching, and responsive design
+              Mix and match components to build exactly what you need without unnecessary bloat
             </CardDescription>
           </CardHeader>
         </Card>
       </div>
 
       {/* Component Categories */}
-      <div className="space-y-6 mt-12">
-        <h3 className="text-2xl font-bold">Available Components</h3>
+      <div className="space-y-6 mt-16">
+        <h2 className="text-3xl font-bold">Component Categories</h2>
+        <p className="text-muted-foreground">
+          Browse through different component categories to find what you need for your project.
+        </p>
         
-        <Card>
-          <CardHeader>
-            <CardTitle>GitHub Activity Components</CardTitle>
-            <CardDescription>
-              Display GitHub statistics, contribution graphs, language usage, and more
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              <ComponentLink
-                href="/components/github-activity/stat-card"
-                title="GitHubStatCard"
-                description="Display individual stats like repos, stars, forks"
-              />
-              <ComponentLink
-                href="/components/github-activity/stats-grid"
-                title="GitHubStatsGrid"
-                description="Grid layout for multiple statistics"
-              />
-              <ComponentLink
-                href="/components/github-activity/contribution-graph"
-                title="GitHubContributionGraph"
-                description="GitHub-style contribution heatmap"
-              />
-              <ComponentLink
-                href="/components/github-activity/contribution-stats"
-                title="GitHubContributionStats"
-                description="Detailed contribution metrics and patterns"
-              />
-              <ComponentLink
-                href="/components/github-activity/language-chart"
-                title="GitHubLanguageChart"
-                description="Programming language usage visualization"
-              />
-              <ComponentLink
-                href="/components/github-activity/activity-dashboard"
-                title="GitHubActivityDashboard"
-                description="Complete dashboard with all components"
-              />
-            </div>
-            <div className="mt-6 pt-6 border-t">
-              <Link
-                href="/components/github-activity/installation"
-                className="text-primary hover:underline font-medium"
-              >
-                View Installation Guide →
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 mt-8">
+          <Card className="hover:border-primary transition-colors">
+            <CardHeader>
+              <CardTitle className="text-2xl">GitHub Activity Components</CardTitle>
+              <CardDescription className="text-base">
+                Comprehensive suite of components for displaying GitHub statistics, contribution graphs, language usage, and activity metrics. Perfect for developer portfolios, team dashboards, and project showcases.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="font-medium">Includes:</span>
+                  <span className="text-muted-foreground">
+                    Stat Cards, Contribution Graphs, Language Charts, Activity Dashboards, and more
+                  </span>
+                </div>
+                <Link
+                  href="/components/github-activity/overview"
+                  className="inline-flex items-center text-primary hover:underline font-medium"
+                >
+                  Explore GitHub Activity Components →
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
-      {/* Quick Start */}
-      <Card className="mt-8 bg-muted/50">
+      {/* Why Use These Components */}
+      <Card className="mt-16 bg-muted/50">
         <CardHeader>
-          <CardTitle>Quick Start</CardTitle>
+          <CardTitle className="text-2xl">Why Use These Components?</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">1. Add to your .env.local:</p>
-            <pre className="p-4 rounded-lg bg-background border text-sm">
-              <code>{`NEXT_PUBLIC_GITHUB_USERNAME=your-username
-NEXT_PUBLIC_GITHUB_TOKEN=your-token`}</code>
-            </pre>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">2. Import and use:</p>
-            <pre className="p-4 rounded-lg bg-background border text-sm">
-              <code>{`import { GitHubActivityDashboard } from "@/components/github-activity";
-
-<GitHubActivityDashboard />`}</code>
-            </pre>
+          <div className="space-y-3">
+            <div>
+              <h4 className="font-semibold mb-1">Save Development Time</h4>
+              <p className="text-sm text-muted-foreground">
+                Skip the boilerplate and focus on what matters. These components handle the complex logic so you don't have to.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-1">Maintain Consistency</h4>
+              <p className="text-sm text-muted-foreground">
+                Built with shared design patterns and principles to ensure a cohesive user experience across your application.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-1">Learn Best Practices</h4>
+              <p className="text-sm text-muted-foreground">
+                Each component demonstrates modern React patterns, TypeScript usage, and performance optimizations.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-1">Built for Real Projects</h4>
+              <p className="text-sm text-muted-foreground">
+                These aren't just demos—they're production-grade components used in real applications, including this portfolio site.
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
 
-function ComponentLink({ href, title, description }: { href: string; title: string; description: string }) {
-  return (
-    <Link
-      href={href}
-      className="block p-4 rounded-lg border hover:border-primary hover:bg-accent transition-colors"
-    >
-      <h4 className="font-semibold mb-1">{title}</h4>
-      <p className="text-sm text-muted-foreground">{description}</p>
-    </Link>
+      {/* Getting Started */}
+      <div className="mt-16 p-6 border rounded-lg bg-card">
+        <h3 className="text-xl font-bold mb-3">Getting Started</h3>
+        <p className="text-muted-foreground mb-4">
+          Each component category has its own documentation, installation guide, and usage examples. Select a category from the sidebar to get started.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/components/github-activity/overview">
+            <button className="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+              Browse Components
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
 
