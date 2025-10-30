@@ -25,7 +25,6 @@ export function Navigation() {
     { href: "/projects", label: "Projects" },
     { href: "/github", label: "GitHub" },
     { href: "/components", label: "Components" },
-    { href: "/resume", label: "Resume" },
   ];
 
   useEffect(() => {

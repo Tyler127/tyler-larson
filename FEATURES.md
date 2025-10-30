@@ -37,11 +37,6 @@
 - **Staggered badge animations** for skills
 - **Card lift effects** on hover
 
-### Resume Page
-- **Fade-in animations** for content sections
-- **Scale animations** for contact icons
-- **Smooth transitions** throughout
-- **Interactive download button** with icon animation
 
 ## 🧭 Navigation
 
@@ -107,25 +102,6 @@
 - Hover animations
 - Professional certificates
 
-### Resume Page (`/resume`)
-
-**Header:**
-- Download button (top and bottom)
-- Professional layout
-- Contact information grid
-
-**Sections:**
-- Professional Summary
-- Technical Skills (categorized)
-- Work Experience (detailed)
-- Education
-- Certifications
-
-**Download Feature:**
-- One-click download
-- HTML format (easily printable)
-- Well-formatted offline version
-- Includes all resume information
 
 ## 🎯 Key Features
 
@@ -233,7 +209,6 @@ All layouts adapt smoothly across these breakpoints.
 ### Pages
 - Home page
 - Experience page
-- Resume page
 - 404 page (auto-generated)
 
 ### Documentation

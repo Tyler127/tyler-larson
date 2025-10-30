@@ -11,7 +11,6 @@ A modern, responsive personal portfolio website built with Next.js 16, TypeScrip
 - **Three Main Sections**:
   - **Home**: Hero section with animated particles and call-to-action
   - **Experience**: Single-page scrolling experience with timeline, work history, education, and certifications
-  - **Resume**: Downloadable resume with full professional details
 
 ## Getting Started
 
@@ -48,8 +47,6 @@ tyler-larson/
 │   ├── app/
 │   │   ├── experience/
 │   │   │   └── page.tsx       # Experience page with scroll effects
-│   │   ├── resume/
-│   │   │   └── page.tsx       # Resume page with download functionality
 │   │   ├── globals.css        # Global styles and theme
 │   │   ├── layout.tsx         # Root layout with navigation
 │   │   └── page.tsx           # Home page
@@ -68,7 +65,6 @@ tyler-larson/
 
 1. **Home Page** (`src/app/page.tsx`): Update the hero section with your name and title
 2. **Experience Page** (`src/app/experience/page.tsx`): Modify the experiences, education, and certifications arrays
-3. **Resume Page** (`src/app/resume/page.tsx`): Update the contact info, skills, and work experience sections
 4. **Navigation** (`src/components/navigation.tsx`): Update the site title in the navigation bar
 
 ### Theming
@@ -111,12 +107,6 @@ The website uses Tailwind CSS with shadcn/ui's theming system. To customize colo
 - Skills badges with staggered animations
 - Education and certifications sections
 
-### Resume Page
-- Complete professional resume
-- One-click download functionality
-- Organized sections for skills, experience, and education
-- Contact information with links
-- Print-friendly format
 
 ## License
 

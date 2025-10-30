@@ -74,7 +74,7 @@ export function HeroSection() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/resume">Download Resume</Link>
+            <Link href="/projects">View Projects</Link>
           </Button>
         </motion.div>
       </motion.div>
