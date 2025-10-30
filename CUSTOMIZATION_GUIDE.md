@@ -102,24 +102,6 @@ const certifications = [
 ];
 ```
 
-## 4. Resume Page
-
-**File**: `src/app/resume/page.tsx`
-
-### Contact Information (Lines ~150-155)
-Update your contact details:
-
-```typescript
-const contactInfo = [
-  { icon: Mail, label: "your.email@example.com", href: "mailto:your.email@example.com" },
-  { icon: Phone, label: "(123) 456-7890", href: "tel:+11234567890" },
-  { icon: MapPin, label: "Your City, State" },
-  { icon: Linkedin, label: "linkedin.com/in/yourprofile", href: "https://linkedin.com/in/yourprofile" },
-  { icon: Github, label: "github.com/yourusername", href: "https://github.com/yourusername" },
-  { icon: Globe, label: "yourwebsite.com", href: "https://yourwebsite.com" },
-];
-```
-
 ### Technical Skills (Lines ~157-164)
 Customize your skill categories:
 
@@ -140,13 +122,6 @@ Write your own summary:
   expertise, and career goals.
 </p>
 ```
-
-### Downloadable Resume Content (Lines ~20-140)
-Update the HTML template that gets downloaded:
-- Replace all personal information
-- Update work experience
-- Update education
-- Update skills and certifications
 
 ## 5. Styling & Theming
 
