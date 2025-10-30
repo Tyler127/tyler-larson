@@ -18,7 +18,7 @@ export default function SkeletonPage() {
   return (
     <ComponentPreview
       title="Skeleton Components"
-      description="Loading states for all components"
+      description="Animated loading states for all GitHub Activity components. These are displayed automatically while data is being fetched, but can also be used independently for custom loading UIs."
       code={skeletonCode}
       preview={
         <div className="space-y-8">

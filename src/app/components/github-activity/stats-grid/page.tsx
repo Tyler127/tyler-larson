@@ -17,8 +17,34 @@ export default function StatsGridPage() {
   return (
     <ComponentPreview
       title="GitHubStatsGrid"
-      description="Grid layout for displaying multiple GitHub stats"
+      description="A grid layout displaying all GitHub stats at once. Combines multiple GitHubStatCard components into a responsive grid for a comprehensive stats overview."
       code={statsGridCode}
+      props={[
+        {
+          name: "username",
+          type: "string",
+          default: "env.NEXT_PUBLIC_GITHUB_USERNAME",
+          description: "GitHub username to fetch stats for"
+        },
+        {
+          name: "columns",
+          type: "number",
+          default: "4",
+          description: "Number of columns in the grid (responsive)"
+        },
+        {
+          name: "animate",
+          type: "boolean",
+          default: "true",
+          description: "Enable count-up animation for all stat values"
+        },
+        {
+          name: "githubToken",
+          type: "string",
+          default: "env.NEXT_PUBLIC_GITHUB_TOKEN",
+          description: "GitHub personal access token for API requests"
+        }
+      ]}
       preview={
         <GitHubStatsGrid
           username={DEMO_USERNAME}

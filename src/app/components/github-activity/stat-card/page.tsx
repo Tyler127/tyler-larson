@@ -18,8 +18,34 @@ export default function StatCardPage() {
   return (
     <ComponentPreview
       title="GitHubStatCard"
-      description="Display a single stat with an icon and optional animation"
+      description="Display individual GitHub statistics with an icon and optional count-up animation. Perfect for highlighting key metrics like repositories, stars, forks, and followers."
       code={statCardCode}
+      props={[
+        {
+          name: "type",
+          type: "'repos' | 'stars' | 'forks' | 'followers'",
+          default: "—",
+          description: "The type of GitHub stat to display"
+        },
+        {
+          name: "username",
+          type: "string",
+          default: "env.NEXT_PUBLIC_GITHUB_USERNAME",
+          description: "GitHub username to fetch stats for"
+        },
+        {
+          name: "animate",
+          type: "boolean",
+          default: "true",
+          description: "Enable count-up animation for the stat value"
+        },
+        {
+          name: "githubToken",
+          type: "string",
+          default: "env.NEXT_PUBLIC_GITHUB_TOKEN",
+          description: "GitHub personal access token for API requests"
+        }
+      ]}
       preview={
         <div className="grid grid-cols-2 gap-4">
           <GitHubStatCard

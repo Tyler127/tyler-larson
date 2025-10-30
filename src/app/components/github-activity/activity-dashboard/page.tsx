@@ -27,8 +27,22 @@ export default function ActivityDashboardPage() {
   return (
     <ComponentPreview
       title="GitHubActivityDashboard"
-      description="Complete dashboard combining all components with auto-fetch capability"
+      description="All-in-one GitHub activity dashboard combining stats grid, contribution graph, contribution stats, and language chart. Perfect for developer portfolios and profile pages."
       code={dashboardCode}
+      props={[
+        {
+          name: "username",
+          type: "string",
+          default: "env.NEXT_PUBLIC_GITHUB_USERNAME",
+          description: "GitHub username to display activity for"
+        },
+        {
+          name: "githubToken",
+          type: "string",
+          default: "env.NEXT_PUBLIC_GITHUB_TOKEN",
+          description: "GitHub personal access token for API requests"
+        }
+      ]}
       preview={
         <GitHubActivityDashboard username={DEMO_USERNAME} />
       }
