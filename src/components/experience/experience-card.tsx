@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Award, Code2 } from "lucide-react";
-import { Experience } from "./experience-data";
+import { Experience } from "@/components/experience/experience-data";
 
 interface ExperienceCardProps {
   experience: Experience;
