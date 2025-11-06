@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { FloatingParticles } from "./floating-particles";
+import { FloatingParticles } from "@/components/home/floating-particles";
 
 const containerVariants = {
   hidden: { opacity: 0 },

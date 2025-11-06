@@ -30,11 +30,16 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
+  // Extract repo name from GitHub URL for ID
+  const repoName = project.github.split('/').pop() || project.title.replace(/\s+/g, '-');
+  
   return (
     <motion.div
+      id={`project-${repoName}`}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="scroll-mt-20"
     >
       <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
